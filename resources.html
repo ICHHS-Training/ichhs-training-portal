@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources | ICHHS Training Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .resources-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .resource-sidebar {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      position: sticky;
+      top: calc(var(--nav-height) + 1rem);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .resource-sidebar-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--white);
+    }
+
+    .resource-sidebar-nav {
+      list-style: none;
+      padding: 0.5rem 0;
+    }
+
+    .resource-sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+
+    .resource-sidebar-nav a:hover {
+      background: var(--gray-100);
+      color: var(--text);
+    }
+
+    .resource-sidebar-nav a.active {
+      background: var(--teal-pale);
+      color: var(--teal);
+      font-weight: 600;
+    }
+
+    .resource-section {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .resource-section-header {
+      padding: 1rem 1.5rem;
+      background: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .resource-section-header h2 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    .resource-section-header .section-icon {
+      font-size: 1.25rem;
+      width: 38px;
+      height: 38px;
+      background: rgba(255,255,255,0.12);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .resource-section-body {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.75rem 0.9rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      background: var(--off-white);
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .resource-item:hover {
+      background: var(--teal-pale);
+      border-color: var(--teal-light);
+      color: var(--teal);
+    }
+
+    .resource-item:last-child { margin-bottom: 0; }
+
+    .resource-item-icon {
+      width: 34px;
+      height: 34px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .resource-item-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+
+    .resource-item-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .resource-item .ext-arrow {
+      margin-left: auto;
+      font-size: 0.8rem;
+      color: var(--gray-300);
+      flex-shrink: 0;
+    }
+
+    .resource-item:hover .ext-arrow { color: var(--teal); }
+
+    @media (max-width: 768px) {
+      .resources-layout { grid-template-columns: 1fr; }
+      .resource-sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────── -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">🏛️</div>
+    <div class="nav-brand-text">
+      ICHHS
+      <span class="nav-brand-sub">Training Portal</span>
+    </div>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="annual-training.html">Annual Training</a></li>
+    <li><a href="new-employee.html">New Employee</a></li>
+    <li><a href="resources.html" class="active">Resources</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-eyebrow">📂 Agency Resources</div>
+      <h1>Resources &amp; Documents</h1>
+      <p>Quick access to policies, templates, technology guides, and internal reference documents. If you're not sure where to find something, start with the Resource Guide.</p>
+    </div>
+  </section>
+
+  <div class="content-area">
+
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      Resources
+    </div>
+
+    <!-- Search -->
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Find a Document</h2>
+        <p class="section-subtitle">Search by name or keyword to quickly locate what you need.</p>
+      </div>
+    </div>
+
+    <div class="search-bar mb-4" style="max-width:100%;">
+      <span class="search-bar-icon">🔎</span>
+      <input type="text" id="resource-search" placeholder="Search resources, policies, templates…" autocomplete="off" />
+    </div>
+
+    <div class="resources-layout">
+
+      <!-- Sidebar navigation -->
+      <div class="resource-sidebar">
+        <div class="resource-sidebar-header">Jump to Section</div>
+        <ul class="resource-sidebar-nav">
+          <li><a href="#section-policies">📋 Policies &amp; Guidelines</a></li>
+          <li><a href="#section-employee">💛 Employee Resources</a></li>
+          <li><a href="#section-templates">✉️ Communication Templates</a></li>
+          <li><a href="#section-tech">💻 Technology &amp; Systems</a></li>
+          <li><a href="#section-scheduling">📅 Scheduling &amp; Reservations</a></li>
+          <li><a href="#section-safety">🛡️ Safety &amp; Workplace</a></li>
+          <li><a href="#section-quickref">📌 Quick Reference</a></li>
+          <li><a href="#section-newsletter">📰 HHS Insider</a></li>
+        </ul>
+      </div>
+
+      <!-- Resource sections -->
+      <div id="resource-content">
+
+        <!-- Agency Policies & Guidelines -->
+        <div class="resource-section" id="section-policies">
+          <div class="resource-section-header">
+            <div class="section-icon">📋</div>
+            <h2>Agency Policies &amp; Guidelines</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">These documents outline expectations for workplace conduct, safety, and operations.</p>
+
+            <a href="https://drive.google.com/file/d/1-85hHDL4kg6-GVlGgdLABwFsMqDGpdlj/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">👔</div>
+              <div><div class="resource-item-label">Dress Guidelines</div><div class="resource-item-sub">Agency dress code and appearance expectations</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/14NkyLyDNcSUkYBF7wjBlpYQmtJps2rOk/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🚗</div>
+              <div><div class="resource-item-label">Vehicle Usage Policy</div><div class="resource-item-sub">Rules and requirements for agency vehicle use</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🛡️</div>
+              <div><div class="resource-item-label">Violence Prevention Plan</div><div class="resource-item-sub">Agency plan for preventing and responding to violence</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1PmG-FllAUKKrp2eldG6ISQySCOijW0yL/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🔐</div>
+              <div><div class="resource-item-label">Confidentiality – Not Public Data</div><div class="resource-item-sub">Data classification and confidentiality guidance</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1JkPFyF-At7llRBM9wONS7tG7ThPFE0HO/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📖</div>
+              <div><div class="resource-item-label">Personnel Policy Manual</div><div class="resource-item-sub">Comprehensive employee policy guide</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1JOjcjXTUfi9vlJONFQarLJoo1OWn0PHf/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">⚖️</div>
+              <div><div class="resource-item-label">Affirmative Action Plan</div><div class="resource-item-sub">Agency affirmative action policies and requirements</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1JucHRtTm3FoI8ykH5DZpZe1co1UJbaEN/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🌐</div>
+              <div><div class="resource-item-label">Limited English Proficiency (LEP) Plan</div><div class="resource-item-sub">Language access requirements and interpreter guidance</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1uNzxxxRiDAcliBVshBctMBh3x3AYObl9/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🔒</div>
+              <div><div class="resource-item-label">FTI Safeguarding Policy</div><div class="resource-item-sub">Federal Tax Information safeguarding requirements</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Employee Resources -->
+        <div class="resource-section" id="section-employee">
+          <div class="resource-section-header">
+            <div class="section-icon">💛</div>
+            <h2>Employee Resources</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Information and tools available to support staff well-being and workplace success.</p>
+
+            <a href="https://drive.google.com/file/d/1JUIs4IFg53Xy2PIKiUUKKrL0F9pE6nfA/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">💛</div>
+              <div><div class="resource-item-label">Employee Assistance Program (EAP) Brochure</div><div class="resource-item-sub">Confidential support services available to all employees</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1XWZ4L4QeTifMtXx7vzhXY3LbqOjRy8uY/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📘</div>
+              <div><div class="resource-item-label">Resource Guide</div><div class="resource-item-sub">The primary internal reference for all ICHHS staff</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/spreadsheets/d/115FU--pJvVW6RO4CJYwWKU6pz1TahAAL/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📅</div>
+              <div><div class="resource-item-label">2026 Payment Calendar</div><div class="resource-item-sub">Scheduled payment dates for 2026</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1BhTpQRmUvcDPbbCsV-WbMRxF0fDlueqR/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📅</div>
+              <div><div class="resource-item-label">2026 Payroll Calendar</div><div class="resource-item-sub">Payroll schedule and processing dates for 2026</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1LI_DQQKZmZS7NIpqVAAqM_RZ7Wai70Tn/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">💰</div>
+              <div><div class="resource-item-label">Accessing Pay Information</div><div class="resource-item-sub">How to access your pay stubs and payroll details</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1qlm1ALG5Sjr3fTnQysPB2VAvTKQmgF7l/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📱</div>
+              <div><div class="resource-item-label">UKG Mobile App Instructions</div><div class="resource-item-sub">How to set up and use the UKG mobile app for payroll access</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1z4Z-HLeWdl-MSPIcFmYknaOf2b3yKG4E/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🎓</div>
+              <div><div class="resource-item-label">Conference and Training Request Form</div><div class="resource-item-sub">Submit requests to attend external trainings or conferences</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🚗</div>
+              <div><div class="resource-item-label">Blank Mileage Form</div><div class="resource-item-sub">Mileage reimbursement form for work-related travel</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/spreadsheets/d/1Jb4HX9o3a5iuheoIhMtcjvRhMP6oeuZg/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📊</div>
+              <div><div class="resource-item-label">Public Health Reimbursement Form</div><div class="resource-item-sub">Reimbursement tracking form for Public Health staff</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1Ntu07nH59jONiGQHNegMOXFEqDay86j6/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📊</div>
+              <div><div class="resource-item-label">Family Services Reimbursement Form</div><div class="resource-item-sub">Reimbursement tracking form for Family Services staff</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1A-sP7SpVsnIKvUBVK4VFilot_e5SF90j/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🏃</div>
+              <div><div class="resource-item-label">Treadmill Waiver</div><div class="resource-item-sub">Required waiver for use of the agency treadmill</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1jEUtDVDNWKogGw8AkSfslMkWT34tCC9i/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📋</div>
+              <div><div class="resource-item-label">Sentinel Event Policy</div><div class="resource-item-sub">Definition and reporting procedures for sentinel events</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Communication & Document Templates -->
+        <div class="resource-section" id="section-templates">
+          <div class="resource-section-header">
+            <div class="section-icon">✉️</div>
+            <h2>Communication &amp; Document Templates</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Templates and instructions for creating consistent, professional communication with clients and partners.</p>
+
+            <a href="https://drive.google.com/file/d/1P7sUgBdaTn2K5ZPjANFTiUoCzCZwnDBZ/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">✉️</div>
+              <div><div class="resource-item-label">Email Signature Guide</div><div class="resource-item-sub">How to set up your professional email signature</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1RlXyMfQk8CoKwdGbbJapx78iH8y7RaNE/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📞</div>
+              <div><div class="resource-item-label">Voicemail Script Guide</div><div class="resource-item-sub">Professional voicemail scripts and setup instructions</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/document/d/1ZD78PFSkC7_zeIUegEFBLFpzH8EY_vL2/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📄</div>
+              <div><div class="resource-item-label">Business Letter Template</div><div class="resource-item-sub">Official ICHHS business letter format</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/document/d/14j74RAGLDXdH2uThF7cmAbGaE-_vNfy8/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🖨️</div>
+              <div><div class="resource-item-label">Letterhead Template</div><div class="resource-item-sub">Official ICHHS letterhead for correspondence</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1uaLPa-k22ypjpDJABjj8J2y1g-O5rmZX/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">💾</div>
+              <div><div class="resource-item-label">How to Save Letterhead as a Template</div><div class="resource-item-sub">Step-by-step guide for creating a Word template</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1a5UKwwFvFQ028YinEnGHqrzeEseVVptf/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">✉️</div>
+              <div><div class="resource-item-label">How to Create Email Templates</div><div class="resource-item-sub">Instructions for setting up email templates in Outlook</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/document/d/1ymr7pAVVGQuLla8YbNkYkghHqq7WRRgN/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📝</div>
+              <div><div class="resource-item-label">Email Templates Library</div><div class="resource-item-sub">Pre-written templates for common client communications</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Technology & Systems -->
+        <div class="resource-section" id="section-tech">
+          <div class="resource-section-header">
+            <div class="section-icon">💻</div>
+            <h2>Technology &amp; Systems</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Guides for systems used throughout the agency.</p>
+
+            <a href="https://drive.google.com/file/d/1WlDg1oMjD1xCI6opp6UTJXsTE-RP1Ib-/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">💻</div>
+              <div><div class="resource-item-label">Caseworks Overview Guide</div><div class="resource-item-sub">Introduction and overview of the Caseworks case management system</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1pmXrE1nSr5qZ8Yy7HaIBxJzc8kJBPjJ-/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📠</div>
+              <div><div class="resource-item-label">eGoldFax Instructions</div><div class="resource-item-sub">How to send and receive faxes using eGoldFax</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1eg8i6UQaNjMz7NC3eaPJpTOSLpJAbImT/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📞</div>
+              <div><div class="resource-item-label">Soft Phone Guide</div><div class="resource-item-sub">Instructions for using the agency soft phone system</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/document/d/1bRta1U3BKZt8sbLfka3kiFkL7nAF1RYr/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📋</div>
+              <div><div class="resource-item-label">Internal Contacts</div><div class="resource-item-sub">Quick reference for reaching colleagues across all units</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://data-securitytraining.dhs.mn.gov/Account/Login" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🔒</div>
+              <div><div class="resource-item-label">DHS Data Privacy Training Portal</div><div class="resource-item-sub">Complete required data security training modules</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Scheduling & Reservations -->
+        <div class="resource-section" id="section-scheduling">
+          <div class="resource-section-header">
+            <div class="section-icon">📅</div>
+            <h2>Scheduling &amp; Reservations</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Instructions for reserving shared agency resources. Out-of-county trips take priority over in-county reservations.</p>
+
+            <a href="https://drive.google.com/file/d/1VW1dm9bhQyh2vxEOh2kF9WsNswgbRpIH/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🏢</div>
+              <div><div class="resource-item-label">Conference Room Reservations Guide</div><div class="resource-item-sub">How to reserve conference and interview rooms</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1qxzmupJSbkHptbrVCQ8DiyXVP2NXsmJH/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🚗</div>
+              <div><div class="resource-item-label">Vehicle Reservation Instructions</div><div class="resource-item-sub">How to reserve agency vehicles for field visits and transports</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Agency Safety & Workplace Environment -->
+        <div class="resource-section" id="section-safety">
+          <div class="resource-section-header">
+            <div class="section-icon">🛡️</div>
+            <h2>Agency Safety &amp; Workplace Environment</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Resources related to maintaining a safe and respectful workplace for all staff and clients.</p>
+
+            <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🛡️</div>
+              <div><div class="resource-item-label">Violence Prevention Plan</div><div class="resource-item-sub">Agency prevention and response plan for workplace violence</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/presentation/d/1Losp-HS5LwdvOY463DTYEPA1uiqzHhXR/edit?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📊</div>
+              <div><div class="resource-item-label">Violence Prevention Strategies Presentation</div><div class="resource-item-sub">De-escalation and safety strategies for client interactions</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://www.police1.com/media-relations/articles/video-teaches-citizens-how-to-survive-an-active-shooter-fzq1M02dxvgvUNTX/" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🎥</div>
+              <div><div class="resource-item-label">Active Shooter Awareness Training</div><div class="resource-item-sub">Run / Hide / Fight training video</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1jEUtDVDNWKogGw8AkSfslMkWT34tCC9i/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">⚠️</div>
+              <div><div class="resource-item-label">Sentinel Event Policy</div><div class="resource-item-sub">Reporting requirements for serious or unexpected incidents</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Reference Documents -->
+        <div class="resource-section" id="section-quickref">
+          <div class="resource-section-header">
+            <div class="section-icon">📌</div>
+            <h2>Quick Reference Documents</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Commonly referenced internal guides for day-to-day operations.</p>
+
+            <a href="https://drive.google.com/file/d/1PmG-FllAUKKrp2eldG6ISQySCOijW0yL/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🔐</div>
+              <div><div class="resource-item-label">Confidentiality &amp; Data Privacy Guide</div><div class="resource-item-sub">Client data and privacy requirements</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1XWZ4L4QeTifMtXx7vzhXY3LbqOjRy8uY/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📘</div>
+              <div><div class="resource-item-label">Resource Guide</div><div class="resource-item-sub">Your first stop for any internal question — including internal contacts</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/16ZpjZ50d0Qsqi8Sw9hIYMK3SBVcggrqi/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">👶</div>
+              <div><div class="resource-item-label">Child Protection Mandated Reporter Training</div><div class="resource-item-sub">Training materials for child protection mandated reporters</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1GnSjo_tYcCdELkQb0LGa6nHV_xwPutYm/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">👴</div>
+              <div><div class="resource-item-label">Vulnerable Adult Mandated Reporter Training</div><div class="resource-item-sub">Training materials for vulnerable adult protection reporters</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://youtu.be/n8VfCJbN_7s" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">🎥</div>
+              <div><div class="resource-item-label">Language Line Tutorial</div><div class="resource-item-sub">How to use Language Line for interpreter services</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSes7ir7oy_pzDduQDR_i7wbzQmd_Jc2H6nIRyyIqNQRnQn7YQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📝</div>
+              <div><div class="resource-item-label">New Employee Training Certification Form</div><div class="resource-item-sub">Submit after completing all new employee training modules</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://docs.google.com/forms/d/13Q7MOyYTrcl2ce1HqcuSEpDM2EBvB_c07Qc-oPNMkY0/preview" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📋</div>
+              <div><div class="resource-item-label">Annual Training Certification Form</div><div class="resource-item-sub">Submit after completing annual employee training</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- HHS Insider Newsletter Archive -->
+        <div class="resource-section" id="section-newsletter">
+          <div class="resource-section-header">
+            <div class="section-icon">📰</div>
+            <h2>HHS Insider — Newsletter Archive</h2>
+          </div>
+          <div class="resource-section-body">
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">The <em>HHS Insider</em> is the internal newsletter for Isanti County Health &amp; Human Services. It highlights agency updates, staff accomplishments, program developments, policy reminders, and important announcements.</p>
+
+            <p style="font-size:0.82rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;">2026</p>
+
+            <a href="https://drive.google.com/file/d/1BLrALjjYuYxVQECNV6ozd1fYKntw4flP/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">March 2026 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1D7mTEb1XR-mUuo5jkRd-zDb_E811cJOT/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">February 2026 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1RCENakw6-xRznkvnX5LjHpNT4qP86kmG/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">January 2026 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <p style="font-size:0.82rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.6rem;margin-top:1.25rem;">2025</p>
+
+            <a href="https://drive.google.com/file/d/1oh-QQKWMbtN3HbHEHPBIzTNfnJKGCPEw/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">December 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/18kmZQ81Ux_AoI4TDkwzTFn34_lfj7Hce/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">November 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1qbsZTSinTx-nTSXNZsKAHdnnBjUNeotW/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">October 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/178oVE0V5FXvcBpyVhDEFrzj93uuwDk3v/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">September 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1wQLxcgKlCwwLnWTy3wzSM0Za-J6XU2Fn/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">August 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1MQoSZSLOxhcU6Ev2FlHR1CIvFaPr-z0h/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">July 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1YmZWoxhyugFeKs97lEvB_wR8ot0eLORW/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">June 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/139c6L7qcDSVtuAVe2N_TAbuNoaav5gzx/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">May 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1GAnCX88uDtKuz9UlUmjn6gJQaCLYT7FH/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">April 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/131rudo-nE8oGWSxjd1HVYdDETDUPNQYA/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">March 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/1FeXCkMla-YJaMORp2VUD7m6Vq-Gz_Dhi/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">February 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+
+            <a href="https://drive.google.com/file/d/15GoULlRGY-ammw0f3X68_UjOxzfgVcOO/view?usp=sharing" target="_blank" rel="noopener" class="resource-item">
+              <div class="resource-item-icon">📰</div>
+              <div><div class="resource-item-label">January 2025 — HHS Insider</div></div>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /resource-content -->
+    </div><!-- /resources-layout -->
+  </div><!-- /content-area -->
+
+  <footer class="footer">
+    <strong>Isanti County Health &amp; Human Services</strong> — Training Portal<br/>
+    For technical issues, contact your supervisor or Division Operations.<br/>
+    If you cannot find a document, the <a href="https://drive.google.com/file/d/1XWZ4L4QeTifMtXx7vzhXY3LbqOjRy8uY/view?usp=sharing" target="_blank" rel="noopener" style="color:var(--teal-light);">Resource Guide</a> is the best place to start.<br/>
+    &copy; <span id="yr"></span> Isanti County HHS. Internal use only.
+  </footer>
+</div>
+
+<script src="scripts.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// Resource search
+const searchInput = document.getElementById('resource-search');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  document.querySelectorAll('.resource-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = (!q || text.includes(q)) ? '' : 'none';
+  });
+  document.querySelectorAll('.resource-section').forEach(section => {
+    const anyVisible = Array.from(section.querySelectorAll('.resource-item'))
+      .some(i => i.style.display !== 'none');
+    section.style.display = anyVisible ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>

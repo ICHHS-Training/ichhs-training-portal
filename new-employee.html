@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Employee Training | ICHHS Training Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Progress tracker ── */
+    .progress-tracker {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .progress-tracker-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-bar-wrap {
+      background: var(--gray-200);
+      border-radius: 100px;
+      height: 10px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .progress-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .progress-label strong { color: var(--teal); }
+
+    /* ── Module nav sidebar ── */
+    .training-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .module-nav {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: calc(var(--nav-height) + 1rem);
+    }
+
+    .module-nav-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--white);
+    }
+
+    .module-nav-list {
+      list-style: none;
+      padding: 0.5rem 0;
+    }
+
+    .module-nav-item button {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+
+    .module-nav-item button:hover { background: var(--gray-100); color: var(--text); }
+    .module-nav-item button.active { background: var(--teal-pale); color: var(--teal); font-weight: 600; }
+    .module-nav-item button.completed .check { color: var(--success); }
+
+    .module-nav-item .check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-300);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+
+    .module-nav-item button.active .check { border-color: var(--teal); background: var(--teal); color: var(--white); }
+    .module-nav-item button.completed .check { border-color: var(--success); background: var(--success); color: var(--white); }
+
+    /* ── Module content ── */
+    .module-content { display: none; }
+    .module-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+    .module-header {
+      background: var(--navy);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .module-header-icon {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      flex-shrink: 0;
+    }
+
+    .module-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin-bottom: 0.3rem;
+    }
+
+    .module-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--white);
+      line-height: 1.25;
+      margin-bottom: 0.35rem;
+    }
+
+    .module-header p { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+    .module-body {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-top: none;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 2rem;
+    }
+
+    /* ── Learning cards (flip) ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Module docs section ── */
+    .module-docs {
+      background: var(--gray-100);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .module-docs-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .doc-chip-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+    .doc-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--teal);
+      text-decoration: none;
+      background: var(--white);
+      padding: 0.3rem 0.75rem;
+      border-radius: 100px;
+      border: 1px solid var(--teal-pale);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+
+    .doc-chip:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* ── Mark complete button ── */
+    .module-complete-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+      border-top: 2px solid var(--gray-100);
+      flex-wrap: wrap;
+    }
+
+    .btn-complete {
+      background: var(--success);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.65rem 1.35rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .btn-complete:hover { background: #155D38; transform: translateY(-1px); }
+    .btn-complete:disabled { background: var(--gray-300); cursor: default; transform: none; }
+
+    /* ── Flip card content ── */
+    .card-topics {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .card-topics li {
+      list-style: none;
+      padding: 0.2rem 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .card-topics li::before { content: '•'; color: var(--teal); font-weight: 700; }
+
+    @media (max-width: 900px) {
+      .training-layout {
+        grid-template-columns: 1fr;
+      }
+      .module-nav {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────── -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">🏛️</div>
+    <div class="nav-brand-text">
+      ICHHS
+      <span class="nav-brand-sub">Training Portal</span>
+    </div>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="annual-training.html">Annual Training</a></li>
+    <li><a href="new-employee.html" class="active">New Employee</a></li>
+    <li><a href="resources.html">Resources</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-eyebrow">🎓 New Employee Onboarding</div>
+      <h1>Welcome to Isanti County HHS</h1>
+      <p>Please complete all modules in order. The final certification form will appear after Module 8 (or after your unit-specific module). Select your unit below to get started.</p>
+    </div>
+  </section>
+
+  <div class="content-area">
+
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      New Employee Training
+    </div>
+
+    <!-- Unit Selection -->
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Step 1: Select Your Unit</h2>
+        <p class="section-subtitle">Choose your unit to load your personalized training path.</p>
+      </div>
+    </div>
+
+    <div class="unit-selector mb-4" id="unit-select-bar">
+      <button class="unit-btn active" onclick="selectUnit('ap', this)"><span class="unit-btn-icon">🛡️</span><span class="unit-btn-name">Adult Protection &amp; Waivered</span><span class="unit-btn-count">11 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('acss', this)"><span class="unit-btn-icon">🏥</span><span class="unit-btn-name">Assessment &amp; Community Support</span><span class="unit-btn-count">11 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('bh', this)"><span class="unit-btn-icon">🧠</span><span class="unit-btn-name">Behavioral Health</span><span class="unit-btn-count">11 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('cs', this)"><span class="unit-btn-icon">👶</span><span class="unit-btn-name">Children's Services</span><span class="unit-btn-count">11 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('chsup', this)"><span class="unit-btn-icon">📑</span><span class="unit-btn-name">Child Support</span><span class="unit-btn-count">10 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('do', this)"><span class="unit-btn-icon">🏢</span><span class="unit-btn-name">Division Operations</span><span class="unit-btn-count">11 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('fa', this)"><span class="unit-btn-icon">💰</span><span class="unit-btn-name">Financial Assistance</span><span class="unit-btn-count">12 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('fiscal', this)"><span class="unit-btn-icon">📊</span><span class="unit-btn-name">Fiscal</span><span class="unit-btn-count">10 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('ph', this)"><span class="unit-btn-icon">🩺</span><span class="unit-btn-name">Public Health</span><span class="unit-btn-count">10 Modules</span></button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-tracker">
+      <div class="progress-tracker-title">Your Progress</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-label"><strong id="progress-text">0 of 9</strong> modules completed</div>
+    </div>
+
+    <!-- ── Training Layout ──────────────────────────────── -->
+    <div class="training-layout">
+
+      <!-- Sidebar nav -->
+      <div class="module-nav" id="module-sidebar">
+        <div class="module-nav-header" id="sidebar-unit-name">Adult Protection &amp; Waivered Services</div>
+        <ul class="module-nav-list" id="module-nav-list">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
+      <!-- Module content panels -->
+      <div id="module-panels">
+
+        <!-- MODULE 1 ─ Welcome -->
+        <div class="module-content active" id="mod-1">
+          <div class="module-header">
+            <div class="module-header-icon">👋</div>
+            <div>
+              <div class="module-num">Module 1 of 9+</div>
+              <h2>Welcome to ICHHS</h2>
+              <p>An introduction to Isanti County Health &amp; Human Services — our mission, values, leadership, and units.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read the following document before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1XWZ4L4QeTifMtXx7vzhXY3LbqOjRy8uY/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📘 Resource Guide</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Welcome!</h3></div>
+                    <div class="flip-front-body">Welcome to Isanti County Health &amp; Human Services. We're glad you're here. This training will orient you to our agency, team, and expectations.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for more</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Getting Started</h3>
+                    <ul>
+                      <li>Complete all modules in order</li>
+                      <li>Review all linked documents</li>
+                      <li>The certification form is at the end</li>
+                      <li>Reach out to your supervisor with questions</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Mission &amp; Values</h3></div>
+                    <div class="flip-front-body">Learn the mission and core values that guide our work every day at ICHHS.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Our Mission &amp; Values</h3>
+                    <ul>
+                      <li><strong>Mission:</strong> Empowering residents to make healthy and safe choices to strengthen our community.</li>
+                      <li>💬 Communication — timely and open</li>
+                      <li>🌍 Diversity — culture of inclusivity</li>
+                      <li>⚖️ Integrity — honest &amp; ethical</li>
+                      <li>🤝 Service — person-centered</li>
+                      <li>👥 Teamwork — trust &amp; accountability</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Meet the Leadership Team</h3></div>
+                    <div class="flip-front-body">Learn who leads ICHHS — from Division Leadership to Unit Supervisors.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Leadership &amp; Structure</h3>
+                    <ul>
+                      <li>Division Leadership oversees all units</li>
+                      <li>Unit Supervisors manage day-to-day operations</li>
+                      <li>Refer to the Resource Guide for the org chart and current contact information</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>HHS Units Overview</h3></div>
+                    <div class="flip-front-body">Isanti County HHS has 9 units, each serving different needs in our community.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 See the units</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Our 9 Units</h3>
+                    <ul>
+                      <li>Adult Protection &amp; Waivered Services</li>
+                      <li>Assessment &amp; Community Support</li>
+                      <li>Behavioral Health</li>
+                      <li>Children's Services</li>
+                      <li>Child Support</li>
+                      <li>Division Operations</li>
+                      <li>Financial Assistance</li>
+                      <li>Fiscal</li>
+                      <li>Public Health</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review all cards above before marking complete.</span>
+              <button class="btn-complete" onclick="markComplete(1, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 2 ─ Professional Expectations -->
+        <div class="module-content" id="mod-2">
+          <div class="module-header">
+            <div class="module-header-icon">💼</div>
+            <div>
+              <div class="module-num">Module 2 of 9+</div>
+              <h2>Professional Expectations</h2>
+              <p>Workplace professionalism, communication standards, professional appearance, and document templates.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read each of the following documents before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1JkPFyF-At7llRBM9wONS7tG7ThPFE0HO/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📋 Personnel Policy Manual</a>
+                <a href="https://drive.google.com/file/d/1-85hHDL4kg6-GVlGgdLABwFsMqDGpdlj/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">👔 Dress Guidelines</a>
+                <a href="https://drive.google.com/file/d/1RlXyMfQk8CoKwdGbbJapx78iH8y7RaNE/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📞 Voicemail Scripts</a>
+                <a href="https://drive.google.com/file/d/1P7sUgBdaTn2K5ZPjANFTiUoCzCZwnDBZ/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">✉️ Email Signature Guide</a>
+                <a href="https://drive.google.com/file/d/1uaLPa-k22ypjpDJABjj8J2y1g-O5rmZX/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📝 How to Save Letterhead as Template</a>
+                <a href="https://docs.google.com/document/d/14j74RAGLDXdH2uThF7cmAbGaE-_vNfy8/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 Letterhead Template</a>
+                <a href="https://docs.google.com/document/d/1ZD78PFSkC7_zeIUegEFBLFpzH8EY_vL2/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 Business Letter Template</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Workplace Professionalism</h3></div>
+                    <div class="flip-front-body">As an ICHHS employee, you are representing Isanti County in every interaction.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Professionalism Standards</h3>
+                    <ul>
+                      <li>Maintain a respectful workplace</li>
+                      <li>Follow conduct expectations at all times</li>
+                      <li>You represent Isanti County in your role</li>
+                      <li>Treat all clients and colleagues with dignity</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Communication Expectations</h3></div>
+                    <div class="flip-front-body">Clear, professional, and timely communication is essential in every role at ICHHS.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Communication Standards</h3>
+                    <ul>
+                      <li>Set up and maintain a professional voicemail</li>
+                      <li>Return calls within one business day</li>
+                      <li>Use clear, professional language internally and externally</li>
+                      <li>Use EIO to communicate your availability</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Professional Appearance</h3></div>
+                    <div class="flip-front-body">Your appearance reflects on the agency. Review the Dress Guidelines for specific expectations.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Appearance Standards</h3>
+                    <ul>
+                      <li>Follow the agency Dress Guidelines</li>
+                      <li>Wear your ID badge visibly at all times</li>
+                      <li>Prohibited attire is outlined in the Dress Guidelines document</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>Professional Email &amp; Templates</h3></div>
+                    <div class="flip-front-body">ICHHS has standard templates for email signatures, letterhead, and business letters.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Email &amp; Templates</h3>
+                    <ul>
+                      <li>Set up your email signature per the guide</li>
+                      <li>Use the agency letterhead template for all formal letters</li>
+                      <li>Save letterhead as a Word template for easy access</li>
+                      <li>Business letter template is available in the Resources section</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Knowledge Check -->
+            <div class="quiz-container">
+              <div class="quiz-header">
+                <span style="font-size:1.25rem;">❓</span>
+                <h4>Knowledge Check — Professional Expectations</h4>
+              </div>
+              <div class="quiz-body">
+                <div class="quiz-scenario">
+                  <strong>Scenario:</strong> What should your voicemail message include?
+                </div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false">
+                    <span class="quiz-option-letter">A</span>
+                    Only your name
+                  </button>
+                  <button class="quiz-option" data-correct="true">
+                    <span class="quiz-option-letter">B</span>
+                    Your name, agency, and return timeline
+                  </button>
+                  <button class="quiz-option" data-correct="false">
+                    <span class="quiz-option-letter">C</span>
+                    No voicemail message is needed
+                  </button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">
+                  ✅ <strong>Correct!</strong> Voicemail should identify the employee, agency, and indicate calls will be returned within one business day.
+                </div>
+                <div class="quiz-feedback incorrect" style="display:none;">
+                  ❌ <strong>Not quite.</strong> Your voicemail should include your name, agency name, and indicate when callers can expect a return call (within one business day).
+                </div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Complete the knowledge check and review all documents before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(2, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 3 ─ Data Privacy -->
+        <div class="module-content" id="mod-3">
+          <div class="module-header">
+            <div class="module-header-icon">🔒</div>
+            <div>
+              <div class="module-num">Module 3 of 9+</div>
+              <h2>Data Privacy &amp; Security</h2>
+              <p>Your legal and ethical obligations to protect client data, federal tax information, and agency records.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading &amp; Training</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read each document and complete the DHS Data Privacy Training before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1uNzxxxRiDAcliBVshBctMBh3x3AYObl9/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🔒 FTI Safeguarding Policy</a>
+                <a href="https://docs.google.com/document/d/1gxpkB2hlRSBYSikrlX3gHW69Y94lVGwv/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 FTI Internal Procedure</a>
+                <a href="https://drive.google.com/file/d/1PmG-FllAUKKrp2eldG6ISQySCOijW0yL/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🔐 Confidentiality — Not Public Data</a>
+                <a href="https://data-securitytraining.dhs.mn.gov/Account/Login" target="_blank" rel="noopener" class="doc-chip">🖥️ DHS Data Privacy Training</a>
+              </div>
+            </div>
+
+            <div class="alert alert-info mb-3">
+              <span>ℹ️</span>
+              <div>Complete the DHS Data Privacy Training at the link above. If you have not been given login information, register as a new employee using your Isanti County email address.</div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Protecting Confidential Data</h3></div>
+                    <div class="flip-front-body">Client confidentiality is a legal and ethical obligation. All staff must understand their data privacy responsibilities.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Confidentiality Standards</h3>
+                    <ul>
+                      <li>Client information is private data</li>
+                      <li>Never share case information without authorization</li>
+                      <li>Understand what constitutes "not public data"</li>
+                      <li>Violations can result in serious legal consequences</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Federal Tax Information (FTI)</h3></div>
+                    <div class="flip-front-body">FTI is subject to strict IRS safeguarding rules. Misuse has serious legal consequences.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>FTI Requirements</h3>
+                    <ul>
+                      <li>Follow DHS Bulletin #13-69-09 procedures</li>
+                      <li>Review the FTI Safeguarding Policy</li>
+                      <li>Sign the FTI binder at the front desk</li>
+                      <li>Signing acknowledges you understand the policy</li>
+                      <li>Misuse of FTI is a federal offense</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Secure Work Practices</h3></div>
+                    <div class="flip-front-body">Protecting data is a daily responsibility — from your computer screen to physical documents.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Secure Practices</h3>
+                    <ul>
+                      <li>Lock your computer when stepping away</li>
+                      <li>Store physical documents securely</li>
+                      <li>All visitors must wear ID badges</li>
+                      <li>Visitors must be logged and escorted</li>
+                      <li>Know which areas are restricted</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>Reporting Security Incidents</h3></div>
+                    <div class="flip-front-body">If you become aware of a data breach or security incident, you have a responsibility to report it promptly.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Reporting Requirements</h3>
+                    <ul>
+                      <li>Report suspected data breaches immediately to your supervisor</li>
+                      <li>Document what happened and when</li>
+                      <li>Do not attempt to investigate independently</li>
+                      <li>Maintain security awareness at all times</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — Data Security</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> You step away from your desk to help a coworker. What should you do before leaving?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Nothing, if you'll only be gone briefly</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">B</span>Lock your computer</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">C</span>Minimize the screen</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> Computers must be secured when unattended to protect confidential data — even briefly.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> You must lock your computer every time you leave your workstation, regardless of how briefly.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Complete the DHS Data Privacy Training and review all documents.</span>
+              <button class="btn-complete" onclick="markComplete(3, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 4 ─ Mandated Reporter -->
+        <div class="module-content" id="mod-4">
+          <div class="module-header">
+            <div class="module-header-icon">⚠️</div>
+            <div>
+              <div class="module-num">Module 4 of 9+</div>
+              <h2>Mandated Reporter Responsibilities</h2>
+              <p>As an ICHHS employee, you are legally required to report suspected abuse or neglect of children and/or vulnerable adults.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read both mandated reporter training documents before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/16ZpjZ50d0Qsqi8Sw9hIYMK3SBVcggrqi/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">👶 Child Protection Mandated Reporter Training</a>
+                <a href="https://drive.google.com/file/d/1GnSjo_tYcCdELkQb0LGa6nHV_xwPutYm/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">👴 Vulnerable Adult Mandated Reporter Training</a>
+              </div>
+            </div>
+
+            <div class="alert alert-warn mb-3">
+              <span>⚠️</span>
+              <div><strong>Key Concept:</strong> Professionals who work with children and/or vulnerable adults must report abuse or neglect. The person with firsthand knowledge must file the report — it is not your job to determine whether maltreatment occurred.</div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Your Responsibilities</h3></div>
+                    <div class="flip-front-body">As an ICHHS employee, you are a mandated reporter. This means you must report suspected abuse or neglect of children and/or vulnerable adults.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Mandated Reporter Duties</h3>
+                    <ul>
+                      <li>You are legally obligated to report</li>
+                      <li>The person with firsthand knowledge must file the report</li>
+                      <li>You cannot delegate this responsibility</li>
+                      <li>Failure to report has legal consequences</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Recognizing Maltreatment</h3></div>
+                    <div class="flip-front-body">Knowing the signs of abuse, neglect, and maltreatment is the first step to protecting vulnerable individuals.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Signs to Watch For</h3>
+                    <ul>
+                      <li>Unexplained physical injuries</li>
+                      <li>Inconsistent explanations from caregivers</li>
+                      <li>Signs of emotional or psychological abuse</li>
+                      <li>Indicators of neglect (hygiene, hunger, isolation)</li>
+                      <li>Behavioral changes or fearfulness</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Reporting Procedures</h3></div>
+                    <div class="flip-front-body">When you suspect maltreatment, you must act promptly. Understand who, when, and how to report.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>How to Report</h3>
+                    <ul>
+                      <li>Report immediately upon suspicion — do not wait</li>
+                      <li>Contact your supervisor or the appropriate intake line</li>
+                      <li>Document your observations factually</li>
+                      <li>You do not need proof to make a report</li>
+                      <li>Discuss with your supervisor as needed</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — Mandated Reporter</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> You are meeting with a family and notice a child with unexplained bruising. The caregiver's explanation seems inconsistent. What should you do?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Wait to see if the situation improves</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span>Discuss concerns with coworkers first</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span>Report suspected maltreatment immediately</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> You are the person with firsthand knowledge. You must report suspected maltreatment — it's not your decision to determine whether it is or isn't abuse.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> As the person with firsthand knowledge, you must report immediately. Waiting or consulting others first could delay protection for a child at risk.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review both mandated reporter training documents before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(4, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 5 ─ De-escalation -->
+        <div class="module-content" id="mod-5">
+          <div class="module-header">
+            <div class="module-header-icon">🤝</div>
+            <div>
+              <div class="module-num">Module 5 of 9+</div>
+              <h2>Client Communication &amp; De-escalation</h2>
+              <p>Building rapport, active listening, de-escalation strategies, and recognizing warning signs before situations escalate.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must review the following document before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://docs.google.com/presentation/d/1Losp-HS5LwdvOY463DTYEPA1uiqzHhXR/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📊 Violence Prevention Strategies Presentation</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Building Rapport</h3></div>
+                    <div class="flip-front-body">Rapport is not about being liked — it's about establishing mutual trust, honesty, and respect even when you disagree.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Building Rapport</h3>
+                    <ul>
+                      <li>Show genuine interest in the person</li>
+                      <li>Respect differences of opinion</li>
+                      <li>Use the same language and terms they use</li>
+                      <li>Match body language appropriately</li>
+                      <li>People with rapport are less likely to become aggressive</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Active Listening</h3></div>
+                    <div class="flip-front-body">Listening is about gaining understanding — not just hearing words, but tone, body language, and what goes unsaid.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Active Listening Skills</h3>
+                    <ul>
+                      <li>Clear your mind and focus fully on the speaker</li>
+                      <li>Listen to hear, not to solve — let them finish</li>
+                      <li>Watch for non-verbal cues and inconsistencies</li>
+                      <li>Listen for ideas, not just words</li>
+                      <li>Be patient — pauses are normal</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>De-escalation Strategies</h3></div>
+                    <div class="flip-front-body">De-escalation begins before you speak — your tone, posture, and presence all send messages.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for key strategies</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Top De-escalation Strategies</h3>
+                    <ul>
+                      <li>Act calm even if you're not</li>
+                      <li>Lower your voice — never match their volume</li>
+                      <li>Validate feelings: "I see where you're coming from"</li>
+                      <li>Give personal space and remove the audience</li>
+                      <li>Ask: "What would help you right now?"</li>
+                      <li><strong>Never say "calm down"</strong></li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>Recognizing Escalation</h3></div>
+                    <div class="flip-front-body">Knowing warning signs early allows you to intervene before a situation becomes dangerous.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Warning Signs</h3>
+                    <ul>
+                      <li>Raised voice, pacing, clenched fists</li>
+                      <li>Making threats or demands</li>
+                      <li>Flushed skin, rapid breathing</li>
+                      <li>Loss of humor, increased sarcasm</li>
+                      <li>Moving toward you or others aggressively</li>
+                      <li>When in doubt — seek assistance</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — De-escalation</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> You're meeting with Arnie Williams and have to inform him that his benefits are being put on hold. Arnie becomes upset and begins raising his voice. What is the best first response?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Tell them to calm down</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span>Raise your voice to be heard</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span>Stay calm and acknowledge their concerns</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> De-escalation techniques include lowering your voice and validating concerns. Matching their energy or telling them to calm down will escalate the situation further.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> The best response is to stay calm, lower your voice, and acknowledge their concerns. Never say "calm down" or raise your voice in response.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review the Violence Prevention Strategies document before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(5, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 6 ─ Safety -->
+        <div class="module-content" id="mod-6">
+          <div class="module-header">
+            <div class="module-header-icon">🚨</div>
+            <div>
+              <div class="module-num">Module 6 of 9+</div>
+              <h2>Safety &amp; Emergency Procedures</h2>
+              <p>Workplace safety, emergency response, sentinel events, and environmental safety awareness.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading &amp; Viewing</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must watch the Active Shooter Training video and read the following documents before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://www.police1.com/media-relations/articles/video-teaches-citizens-how-to-survive-an-active-shooter-fzq1M02dxvgvUNTX/" target="_blank" rel="noopener" class="doc-chip">🎥 Active Shooter Training Video</a>
+                <a href="https://drive.google.com/file/d/1jEUtDVDNWKogGw8AkSfslMkWT34tCC9i/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 Sentinel Event Policy</a>
+                <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🛡️ Violence Prevention Plan</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Workplace Safety Overview</h3></div>
+                    <div class="flip-front-body">Know where safety resources are located and how to access help in an emergency.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Safety Resources</h3>
+                    <ul>
+                      <li>🩺 First Aid Kit — hallway by upstairs breakroom</li>
+                      <li>💛 AED — lobby</li>
+                      <li>🩸 Stop the Bleed — upstairs hallway &amp; Garden Level</li>
+                      <li>Know all exit routes from your workspace</li>
+                      <li>Have 911 on speed dial</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Sentinel Events</h3></div>
+                    <div class="flip-front-body">A sentinel event is an unexpected incident involving serious injury or death that requires review and reporting.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Sentinel Events</h3>
+                    <ul>
+                      <li>Definition: Unexpected events involving serious injury or death</li>
+                      <li>All sentinel events require immediate reporting</li>
+                      <li>Follow the Sentinel Event Policy procedures</li>
+                      <li>Report to your supervisor immediately</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Active Shooter Awareness</h3></div>
+                    <div class="flip-front-body">Know how to respond in an active shooter situation. Watch the linked training video for this module.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for the protocol</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Run / Hide / Fight</h3>
+                    <ul>
+                      <li><strong>RUN</strong> — if you can safely evacuate, do so</li>
+                      <li><strong>HIDE</strong> — if you can't run, find a secure location</li>
+                      <li><strong>FIGHT</strong> — as a last resort to protect yourself</li>
+                      <li>Call 911 when safe to do so</li>
+                      <li>Review the active shooter training video</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>Environmental Safety</h3></div>
+                    <div class="flip-front-body">Safe meeting environments, parking lot awareness, and office safety practices protect you and your colleagues.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Environmental Safety</h3>
+                    <ul>
+                      <li>Use "Risk Rooms" for high-risk client meetings</li>
+                      <li>Keep desktops clear of potential weapons</li>
+                      <li>Know your escape routes</li>
+                      <li>Park under lights; be aware in parking lots</li>
+                      <li>Know barriers and shields available to you</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — Safety</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> You notice the door separating the lobby and employee access is not latching independently and colleagues are not double-checking it. What should you do?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Ignore it</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">B</span>Report the hazard immediately</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">C</span>Try to fix it yourself</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> Security concerns or safety hazards should be reported immediately so they can be properly addressed by the right people.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> Safety hazards must be reported promptly. Attempting to fix security equipment yourself or ignoring the issue could create greater risk.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Watch the Active Shooter video and review the Violence Prevention Plan before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(6, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 7 ─ Language Access -->
+        <div class="module-content" id="mod-7">
+          <div class="module-header">
+            <div class="module-header-icon">🌐</div>
+            <div>
+              <div class="module-num">Module 7 of 9+</div>
+              <h2>Language Access Requirements</h2>
+              <p>Individuals cannot be denied services due to language barriers. Learn how to use interpreter services effectively.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading &amp; Viewing</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read the LEP Plan and watch the Language Line tutorial before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1JucHRtTm3FoI8ykH5DZpZe1co1UJbaEN/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🌐 Limited English Proficiency (LEP) Plan</a>
+                <a href="https://youtu.be/n8VfCJbN_7s" target="_blank" rel="noopener" class="doc-chip">🎥 Language Line Tutorial</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Language Access Requirements</h3></div>
+                    <div class="flip-front-body">Federal and state law requires that individuals are not denied services because of limited English proficiency.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Legal Requirements</h3>
+                    <ul>
+                      <li>Individuals cannot be denied services due to language barriers</li>
+                      <li>The agency must provide meaningful access</li>
+                      <li>This applies to all services ICHHS provides</li>
+                      <li>Review the LEP Plan for full requirements</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Interpreter Services</h3></div>
+                    <div class="flip-front-body">Language Line is available to assist with communication when clients have limited English proficiency.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Using Interpreter Services</h3>
+                    <ul>
+                      <li>Language Line is available for all staff</li>
+                      <li>Use when a client has limited English proficiency</li>
+                      <li>Never use a client's family member as interpreter for case-related matters</li>
+                      <li>Watch the Language Line tutorial video</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Communicating with LEP Individuals</h3></div>
+                    <div class="flip-front-body">Effective communication requires cultural respect and confidentiality, even when using interpreter services.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>LEP Communication Tips</h3>
+                    <ul>
+                      <li>Speak directly to the client, not the interpreter</li>
+                      <li>Be patient and allow extra time</li>
+                      <li>Maintain confidentiality through the interpreter</li>
+                      <li>Be culturally respectful and sensitive</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — Language Access</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> A new individual on your caseload walks in unexpectedly and, in broken English, tells you they don't understand a form you've asked them to complete. What should you do?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Ask if they have someone at home who can explain it to them</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">B</span>Offer to go into an interview room and call interpreter services to assist with completing the form</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">C</span>Apologize and tell them services cannot proceed until the form is complete</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> Individuals must be offered interpreter services when needed. Services cannot be denied due to language barriers.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> You must provide meaningful access to services. Offer interpreter services through Language Line — never ask clients to use family members for case-related matters or deny services due to language barriers.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review the LEP Plan and watch the Language Line tutorial before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(7, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 8 ─ Agency Operations -->
+        <div class="module-content" id="mod-8">
+          <div class="module-header">
+            <div class="module-header-icon">🏛️</div>
+            <div>
+              <div class="module-num">Module 8 of 9+</div>
+              <h2>Agency Operations</h2>
+              <p>Technology, reservations, agency vehicles, internal resources, and day-to-day operations at ICHHS.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="module-docs">
+              <div class="module-docs-title">📄 Required Reading</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>ℹ️</span><div><strong>Action Required:</strong> You must read each of the following documents before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1XWZ4L4QeTifMtXx7vzhXY3LbqOjRy8uY/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📘 Resource Guide</a>
+                <a href="https://drive.google.com/file/d/14NkyLyDNcSUkYBF7wjBlpYQmtJps2rOk/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🚗 Vehicle Policy</a>
+                <a href="https://drive.google.com/file/d/1VW1dm9bhQyh2vxEOh2kF9WsNswgbRpIH/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📅 Conference Room Reservations</a>
+                <a href="https://drive.google.com/file/d/1qxzmupJSbkHptbrVCQ8DiyXVP2NXsmJH/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🚗 Vehicle Reservations</a>
+                <a href="https://drive.google.com/file/d/1JUIs4IFg53Xy2PIKiUUKKrL0F9pE6nfA/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">💛 EAP Employee Brochure</a>
+                <a href="https://drive.google.com/file/d/1WlDg1oMjD1xCI6opp6UTJXsTE-RP1Ib-/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">💻 Caseworks Guide</a>
+                <a href="https://drive.google.com/file/d/1pmXrE1nSr5qZ8Yy7HaIBxJzc8kJBPjJ-/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📠 eGoldFax Guide</a>
+                <a href="https://drive.google.com/file/d/1a5UKwwFvFQ028YinEnGHqrzeEseVVptf/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">✉️ How to Create Email Templates</a>
+                <a href="https://docs.google.com/document/d/1ymr7pAVVGQuLla8YbNkYkghHqq7WRRgN/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📝 Email Templates to Create</a>
+                <a href="https://docs.google.com/document/d/1bRta1U3BKZt8sbLfka3kiFkL7nAF1RYr/edit?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📋 Internal Contacts</a>
+                <a href="https://drive.google.com/file/d/1eg8i6UQaNjMz7NC3eaPJpTOSLpJAbImT/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📞 Soft Phone Guide</a>
+              </div>
+            </div>
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Technology at ICHHS</h3></div>
+                    <div class="flip-front-body">ICHHS uses several key systems. Familiarize yourself with each and access guides in the documents above.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Key Systems</h3>
+                    <ul>
+                      <li>💻 <strong>Caseworks</strong> — primary electronic filing system</li>
+                      <li>📠 <strong>eGoldFax</strong> — electronic fax system</li>
+                      <li>💬 <strong>Microsoft Teams</strong> — internal communication &amp; virtual meetings</li>
+                      <li>✉️ <strong>Outlook</strong> — agency email system</li>
+                      <li>📍 <strong>EIO</strong> — Employee In/Out tracking</li>
+                      <li>💰 <strong>UKG</strong> — payroll system</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Agency Reservations</h3></div>
+                    <div class="flip-front-body">Conference rooms, interview rooms, and agency vehicles are shared resources that must be reserved in advance.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Booking Resources</h3>
+                    <ul>
+                      <li>Reserve conference rooms via the booking guide</li>
+                      <li>Reserve interview rooms as needed</li>
+                      <li>Reserve vehicles in advance through the system</li>
+                      <li>Out-of-county trips take priority over in-county</li>
+                      <li>Always communicate with colleagues when adjusting reservations</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">3</div><h3>Agency Vehicles</h3></div>
+                    <div class="flip-front-body">Agency vehicles are for official business only. A valid license is required and all state and agency rules apply.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for the rules</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Vehicle Rules</h3>
+                    <ul>
+                      <li>Valid driver's license required at all times</li>
+                      <li>Safety belts must be worn</li>
+                      <li>Follow all state traffic laws</li>
+                      <li>Never transport clients in your personal vehicle</li>
+                      <li>Report any incidents immediately</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">4</div><h3>EIO — Employee In/Out</h3></div>
+                    <div class="flip-front-body">EIO is a critical tool for agency operations, employee safety, and daily communication. It is expected to be updated consistently.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Why EIO Matters</h3>
+                    <ul>
+                      <li>Supervisors use it for time card management, employee safety, emergency situations, and locating staff</li>
+                      <li>Colleagues rely on it for availability and communication</li>
+                      <li>Supports daily operations: walk-ins, emergency calls, etc.</li>
+                      <li>EIO is a tool for efficiency and safety — <strong>not surveillance</strong></li>
+                      <li>Correct use fosters an organized, secure, and responsive work environment</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">5</div><h3>Keeping Our Agency Safe &amp; Healthy</h3></div>
+                    <div class="flip-front-body">Every employee plays a role in maintaining a safe, healthy, and considerate work environment for staff and clients alike.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Safety &amp; Health Reminders</h3>
+                    <ul>
+                      <li>🩺 <strong>First Aid Kit</strong> — hallway by the upstairs breakroom</li>
+                      <li>💛 <strong>AED</strong> — located in the lobby</li>
+                      <li>🩸 <strong>Stop the Bleed Kits</strong> — upstairs hallway &amp; Garden Level by Kendra's Office</li>
+                      <li>🌿 Maintain a <strong>scent-free</strong> work environment</li>
+                      <li>🚫 <strong>No latex</strong> allowed (including balloons)</li>
+                      <li>🥜 <strong>No cashews</strong> in the office — severe allergy risk</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">6</div><h3>Printers</h3></div>
+                    <div class="flip-front-body">Printer use is tied to revenue sources. Knowing the rules helps the agency avoid unnecessary charges.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Printer Guidelines</h3>
+                    <ul>
+                      <li>Use your unit's designated printer or the shared printers in Division Operations (supply room, behind front desk, or bypass through window)</li>
+                      <li>Always set printer defaults to <strong>Black &amp; White</strong> — color settings generate color charges even on B&amp;W printers</li>
+                      <li>Contact Marjanae before printing anything beyond letterhead in color</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">7</div><h3>Internal Resources</h3></div>
+                    <div class="flip-front-body">The Resource Guide is your first stop for any internal question. The EAP provides confidential support for all employees.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Key Resources</h3>
+                    <ul>
+                      <li>📘 <strong>Resource Guide</strong> — primary reference for all internal questions</li>
+                      <li>💛 <strong>EAP</strong> — confidential employee support services</li>
+                      <li>📋 <strong>Internal Contacts</strong> — quick reference for reaching colleagues</li>
+                      <li>Refer to your supervisor for anything not covered in the guide</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quiz-container">
+              <div class="quiz-header"><span style="font-size:1.25rem;">❓</span><h4>Knowledge Check — Agency Operations</h4></div>
+              <div class="quiz-body">
+                <div class="quiz-scenario"><strong>Scenario:</strong> You need to transport an individual to Day Treatment, but all agency vehicles are reserved. One is reserved for a home visit in St. Cloud (out of county) and one for a home visit in Cambridge (in county). What should you do?</div>
+                <div class="quiz-options">
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">A</span>Drive them in your personal vehicle</button>
+                  <button class="quiz-option" data-correct="false"><span class="quiz-option-letter">B</span>Ask the St. Cloud worker if they can release their vehicle</button>
+                  <button class="quiz-option" data-correct="true"><span class="quiz-option-letter">C</span>Connect with the Cambridge worker — out-of-county reservations take priority over in-county</button>
+                </div>
+                <div class="quiz-feedback correct" style="display:none;">✅ <strong>Correct!</strong> You never transport clients in your personal vehicle. Out-of-county reservations take priority over in-county reservations. Communicate with the Cambridge worker to see if a vehicle can be released.</div>
+                <div class="quiz-feedback incorrect" style="display:none;">❌ <strong>Not quite.</strong> Never transport clients in your personal vehicle. Out-of-county trips take priority over in-county reservations — so the Cambridge worker's vehicle would be the one to ask about, not St. Cloud.</div>
+                <button class="quiz-reset btn btn-ghost btn-sm">↺ Try Again</button>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review all reference documents for this module before proceeding to unit-specific training.</span>
+              <button class="btn-complete" onclick="markComplete(8, this)">✓ Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 9 ─ Unit-Specific (rendered by JS based on selected unit) -->
+        <div class="module-content" id="mod-9">
+          <div class="module-header">
+            <div class="module-header-icon" id="unit-specific-icon">🏷️</div>
+            <div>
+              <div class="module-num" id="unit-specific-num">Module 9 of 9+</div>
+              <h2 id="unit-specific-title">Unit-Specific Training</h2>
+              <p id="unit-specific-desc">Training specific to your unit's role, requirements, and guidelines.</p>
+            </div>
+          </div>
+          <div class="module-body" id="unit-specific-body">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- FINAL CERTIFICATION MODULE -->
+        <div class="module-content" id="mod-final">
+          <div class="module-header">
+            <div class="module-header-icon">✅</div>
+            <div>
+              <div class="module-num">Final Module</div>
+              <h2>Final Certification</h2>
+              <p>You have completed all required training modules. Complete the certification form below to officially finish your new employee training.</p>
+            </div>
+          </div>
+          <div class="module-body">
+
+            <div class="cards-grid">
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">1</div><h3>Certification Overview</h3></div>
+                    <div class="flip-front-body">The certification form confirms you have completed all training modules and reviewed all required materials.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for details</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>The Form Includes</h3>
+                    <ul>
+                      <li>Training completion acknowledgment</li>
+                      <li>Emergency contact information</li>
+                      <li>Electronic signature</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flip-card-container">
+                <div class="flip-card">
+                  <div class="flip-front">
+                    <div class="flip-front-header"><div class="num">2</div><h3>Training Review</h3></div>
+                    <div class="flip-front-body">Before submitting, confirm you have completed all modules and reviewed all required documents.</div>
+                    <div class="flip-front-footer"><span class="flip-hint">🔄 Flip for checklist</span></div>
+                  </div>
+                  <div class="flip-back">
+                    <h3>Final Checklist</h3>
+                    <ul>
+                      <li>✓ All 8 core modules completed</li>
+                      <li>✓ Unit-specific module completed</li>
+                      <li>✓ Unit Guidelines reviewed</li>
+                      <li>✓ All reference documents reviewed</li>
+                      <li>✓ Knowledge checks completed</li>
+                    </ul>
+                    <div class="flip-back-footer"><span style="font-size:0.75rem;color:rgba(255,255,255,0.5);">🔄 Flip back</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-success mt-3">
+              <span>🎉</span>
+              <div><strong>Congratulations on completing your new employee training!</strong> Click the button below to open the certification form. Complete and submit the form to officially finish your onboarding.</div>
+            </div>
+
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSes7ir7oy_pzDduQDR_i7wbzQmd_Jc2H6nIRyyIqNQRnQn7YQ/viewform?usp=publish-editor" target="_blank" rel="noopener" class="btn btn-primary btn-lg mt-3" style="font-size:1rem;padding:0.9rem 2rem;">
+              📝 Complete Certification Form →
+            </a>
+
+          </div>
+        </div>
+
+      </div><!-- /module-panels -->
+    </div><!-- /training-layout -->
+  </div><!-- /content-area -->
+
+  <footer class="footer">
+    <strong>Isanti County Health &amp; Human Services</strong> — Training Portal<br/>
+    For technical issues, contact your supervisor or Division Operations.<br/>
+    &copy; <span id="yr"></span> Isanti County HHS. Internal use only.
+  </footer>
+</div>
+
+<script src="scripts.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── State ───────────────────────────────────────────────────
+const completed = new Set();
+let currentUnit = 'ap';
+
+// ── Unit configurations ─────────────────────────────────────
+const unitConfig = {
+  ap:    { name: 'Adult Protection & Waivered Services', icon: '🛡️', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1lNeHpvVyAFe2jO3OQRxfiqLMfBOEIPTM/view?usp=sharing' },
+  acss:  { name: 'Assessment & Community Support Services', icon: '🏥', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing' },
+  bh:    { name: 'Behavioral Health', icon: '🧠', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing' },
+  cs:    { name: "Children's Services", icon: '👶', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing' },
+  chsup: { name: 'Child Support', icon: '📑', modules: 10, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing' },
+  do:    { name: 'Division Operations', icon: '🏢', modules: 11, ssts: false, civil: true, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing' },
+  fa:    { name: 'Financial Assistance', icon: '💰', modules: 12, ssts: false, civil: true, imrms: true, lcts: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing' },
+  fiscal:{ name: 'Fiscal', icon: '📊', modules: 10, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing' },
+  ph:    { name: 'Public Health', icon: '🩺', modules: 10, ssts: false, civil: false, imrms: false, lcts: true, guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing' }
+};
+
+const coreModules = [
+  { id: 1, label: 'Welcome to ICHHS' },
+  { id: 2, label: 'Professional Expectations' },
+  { id: 3, label: 'Data Privacy & Security' },
+  { id: 4, label: 'Mandated Reporter Responsibilities' },
+  { id: 5, label: 'Client Communication & De-escalation' },
+  { id: 6, label: 'Safety & Emergency Procedures' },
+  { id: 7, label: 'Language Access Requirements' },
+  { id: 8, label: 'Agency Operations' },
+];
+
+// ── Render sidebar nav ──────────────────────────────────────
+function renderSidebar(unitId) {
+  const u = unitConfig[unitId];
+  document.getElementById('sidebar-unit-name').textContent = u.name;
+  const list = document.getElementById('module-nav-list');
+  list.innerHTML = '';
+
+  const allMods = [...coreModules, { id: 9, label: 'Unit-Specific Training' }, { id: 'final', label: 'Final Certification' }];
+
+  allMods.forEach(m => {
+    const isComplete = completed.has(m.id);
+    const li = document.createElement('li');
+    li.className = 'module-nav-item';
+    const btn = document.createElement('button');
+    btn.className = isComplete ? 'completed' : '';
+    const activePanel = document.querySelector('.module-content.active');
+    if (activePanel && activePanel.id === 'mod-' + m.id) btn.classList.add('active');
+    btn.innerHTML = `<span class="check">${isComplete ? '✓' : ''}</span> Module ${m.id === 'final' ? '🎓' : m.id}: ${m.label}`;
+    btn.addEventListener('click', () => switchModule(m.id));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+}
+
+// ── Render unit-specific content ────────────────────────────
+function renderUnitSpecific(unitId) {
+  const u = unitConfig[unitId];
+  document.getElementById('unit-specific-icon').textContent = u.icon;
+  document.getElementById('unit-specific-title').textContent = 'Unit-Specific Training: ' + u.name;
+  document.getElementById('unit-specific-desc').textContent = 'Training and guidelines specific to the ' + u.name + ' unit.';
+
+  let html = '';
+
+  // SSTS
+  if (u.ssts) {
+    html += `
+      <div class="module-docs" style="margin-bottom:1.5rem;">
+        <div class="module-docs-title">🔢 SSTS Training — Random Moments</div>
+        <div style="font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:0.85rem;">
+          <strong style="color:var(--text);">Why are Random Moments so important?</strong><br/>
+          SSTS is a federally approved cost allocation method that determines reimbursement for administrative social service work, based on quarterly random samplings of staff activities. Completing your Random Moments accurately and on time is critical to the agency's funding.
+        </div>
+        <div class="doc-chip-row">
+          <a href="https://drive.google.com/file/d/17mEZx0i_Y_0JKb9qT-6PEV1awt3Urm5T/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 SSTS Participant Handbook</a>
+          <a href="https://drive.google.com/file/d/1ct6-0ZSAuTtXZRqRx3k_kAdghMkBflaW/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 SSTS Categories, Codes &amp; Definitions</a>
+        </div>
+      </div>`;
+  }
+
+  // Civil Rights
+  if (u.civil) {
+    html += `
+      <div class="module-docs" style="margin-bottom:1.5rem;">
+        <div class="module-docs-title">🏛️ Civil Rights Training</div>
+        <div style="font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:0.85rem;">Review the Civil Rights Training document for your unit's specific requirements.</div>
+        <div class="doc-chip-row">
+          <a href="https://drive.google.com/file/d/1MEGoH96cfFZUqCnuNRxxfi39c5LK69FW/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">🏛️ Civil Rights Training</a>
+        </div>
+      </div>`;
+  }
+
+  // IMRMS
+  if (u.imrms) {
+    html += `
+      <div class="module-docs" style="margin-bottom:1.5rem;">
+        <div class="module-docs-title">🔢 IMRMS Training — Random Moments</div>
+        <div style="font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:0.85rem;">
+          <strong style="color:var(--text);">Why are Random Moments so important?</strong><br/>
+          IMRMS is a federally approved cost allocation method that determines reimbursement for Financial Assistance administrative work, based on quarterly random samplings of staff activities.
+        </div>
+        <div class="doc-chip-row">
+          <a href="https://drive.google.com/file/d/1wJK6xmLDBvP5j7Ned3t983aSO7mfBVNc/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 IMRMS Participant Handbook</a>
+          <a href="https://drive.google.com/file/d/1cOeQBISpR5J8p4arlQTMFh07ahUUs696/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 IMRMS Categories, Codes &amp; Definitions</a>
+        </div>
+      </div>`;
+  }
+
+  // LCTS
+  if (u.lcts) {
+    html += `
+      <div style="background:var(--gold-light);border:1px solid var(--gold);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.9rem;line-height:1.65;">
+        <strong>⚠️ WIC Employees and Public Health Nurses Only</strong><br/>
+        If you are a WIC Employee or Public Health Nurse, review the LCTS document below. If neither applies, skip to Unit Guidelines.
+      </div>
+      <div class="module-docs" style="margin-bottom:1.5rem;">
+        <div class="module-docs-title">🏥 LCTS Module</div>
+        <div class="doc-chip-row">
+          <a href="https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">📄 What is LCTS?</a>
+        </div>
+      </div>`;
+  }
+
+  // Unit Guidelines
+  html += `
+    <div class="module-docs">
+      <div class="module-docs-title">📘 Unit Guidelines</div>
+      <div style="font-size:0.9rem;color:var(--text-muted);margin-bottom:0.85rem;">Review your unit-specific guidelines document carefully. This document outlines procedures, workflows, and expectations specific to the ${u.name} unit.</div>
+      <div class="doc-chip-row">
+        <a href="${u.guideUrl}" target="_blank" rel="noopener" class="doc-chip">📄 ${u.name} Unit Guidelines</a>
+      </div>
+    </div>`;
+
+  html += `
+    <div class="module-complete-bar">
+      <span class="text-muted text-sm">Review all unit-specific materials before proceeding to Final Certification.</span>
+      <button class="btn-complete" onclick="markComplete(9, this)">✓ Mark Module Complete</button>
+    </div>`;
+
+  document.getElementById('unit-specific-body').innerHTML = html;
+  // Re-init flip cards and quizzes
+  initFlipCards && initFlipCards();
+  initQuizzes && initQuizzes();
+}
+
+// ── Switch module ───────────────────────────────────────────
+function switchModule(id) {
+  document.querySelectorAll('.module-content').forEach(p => p.classList.remove('active'));
+  const panel = document.getElementById('mod-' + id);
+  if (panel) panel.classList.add('active');
+  renderSidebar(currentUnit);
+  if (id === 9) renderUnitSpecific(currentUnit);
+  panel && panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Mark module complete ────────────────────────────────────
+function markComplete(moduleId, btn) {
+  completed.add(moduleId);
+  btn.textContent = '✓ Completed';
+  btn.disabled = true;
+  updateProgress();
+  renderSidebar(currentUnit);
+
+  // Auto-advance to next module
+  const order = [1,2,3,4,5,6,7,8,9,'final'];
+  const idx = order.indexOf(moduleId);
+  if (idx !== -1 && idx < order.length - 1) {
+    setTimeout(() => switchModule(order[idx + 1]), 600);
+  }
+}
+
+// ── Update progress bar ─────────────────────────────────────
+function updateProgress() {
+  const total = 9; // 8 core + 1 unit-specific
+  const done  = completed.size;
+  const pct   = Math.min(100, Math.round((done / total) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `${done} of ${total}`;
+}
+
+// ── Select unit ─────────────────────────────────────────────
+function selectUnit(unitId, btn) {
+  currentUnit = unitId;
+  document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  completed.clear();
+  updateProgress();
+  renderSidebar(unitId);
+  switchModule(1);
+}
+
+// ── Init ────────────────────────────────────────────────────
+renderSidebar('ap');
+renderUnitSpecific('ap');
+updateProgress();
+
+// Re-export for inline usage
+function initFlipCards() {
+  document.querySelectorAll('.flip-card').forEach(card => {
+    if (!card._flipInited) {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      card._flipInited = true;
+    }
+  });
+}
+
+function initQuizzes() {
+  document.querySelectorAll('.quiz-container').forEach(quiz => {
+    if (quiz._quizInited) return;
+    quiz._quizInited = true;
+    const options  = quiz.querySelectorAll('.quiz-option');
+    const feedbacks = quiz.querySelectorAll('.quiz-feedback');
+    const resetBtn  = quiz.querySelector('.quiz-reset');
+
+    options.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (opt.classList.contains('disabled')) return;
+        const isCorrect = opt.dataset.correct === 'true';
+        options.forEach(o => {
+          o.classList.add('disabled');
+          if (o.dataset.correct === 'true') o.classList.add('correct');
+        });
+        if (!isCorrect) opt.classList.add('incorrect');
+        feedbacks.forEach(f => {
+          if ((isCorrect && f.classList.contains('correct')) || (!isCorrect && f.classList.contains('incorrect'))) {
+            f.style.display = 'block';
+          }
+        });
+        if (resetBtn) resetBtn.style.display = 'inline-flex';
+      });
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('correct','incorrect','disabled'));
+        feedbacks.forEach(f => f.style.display = 'none');
+        resetBtn.style.display = 'none';
+        quiz._quizInited = false;
+        initQuizzes();
+      });
+    }
+  });
+}
+
+initFlipCards();
+initQuizzes();
+</script>
+</body>
+</html>

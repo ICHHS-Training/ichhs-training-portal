@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICHHS Training Portal | Isanti County Health &amp; Human Services</title>
+  <meta name="description" content="Centralized training portal for Isanti County Health &amp; Human Services employees." />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Home-specific ─────────────────────────────── */
+    .home-hero {
+      background: var(--navy);
+      background-image:
+        radial-gradient(ellipse at 65% 40%, rgba(14,124,123,0.30) 0%, transparent 55%),
+        radial-gradient(ellipse at 15% 85%, rgba(200,146,42,0.14) 0%, transparent 45%);
+      padding: 5rem 2rem 4.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(14,124,123,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--teal), var(--gold), var(--teal));
+    }
+
+    .home-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .home-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(14,124,123,0.2);
+      border: 1px solid rgba(14,124,123,0.4);
+      padding: 0.35rem 0.9rem;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal-light);
+      margin-bottom: 1.25rem;
+    }
+
+    .home-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      max-width: 700px;
+    }
+
+    .home-hero h1 em {
+      color: var(--teal-light);
+      font-style: normal;
+    }
+
+    .home-hero-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.68);
+      max-width: 560px;
+      line-height: 1.75;
+      margin-bottom: 2.25rem;
+    }
+
+    .home-hero-actions {
+      display: flex;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .home-hero-stat-row {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .home-hero-stat {
+      text-align: left;
+    }
+
+    .home-hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--teal-light);
+      line-height: 1;
+    }
+
+    .home-hero-stat-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Mission Strip */
+    .mission-strip {
+      background: var(--gold);
+      padding: 1.1rem 2rem;
+      text-align: center;
+    }
+
+    .mission-strip-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .mission-strip-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      flex-shrink: 0;
+    }
+
+    .mission-strip-text {
+      font-family: var(--font-display);
+      font-size: 0.975rem;
+      color: var(--white);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* Nav Cards */
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .nav-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.25s, transform 0.25s;
+      text-decoration: none;
+    }
+
+    .nav-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .nav-card-top {
+      height: 6px;
+    }
+
+    .nav-card-top.teal   { background: linear-gradient(90deg, var(--teal), var(--teal-light)); }
+    .nav-card-top.navy   { background: linear-gradient(90deg, var(--navy), var(--navy-light)); }
+    .nav-card-top.gold   { background: linear-gradient(90deg, var(--gold), #E8B86D); }
+
+    .nav-card-body {
+      padding: 2rem 1.75rem;
+      flex: 1;
+    }
+
+    .nav-card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .nav-card-icon.teal { background: var(--teal-pale); }
+    .nav-card-icon.navy { background: rgba(27,47,78,0.08); }
+    .nav-card-icon.gold { background: var(--gold-light); }
+
+    .nav-card-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .nav-card-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .nav-card-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .nav-card-footer {
+      padding: 1rem 1.75rem;
+      border-top: 1px solid var(--gray-100);
+      background: var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--teal);
+    }
+
+    .nav-card-footer .arrow { transition: transform 0.2s; }
+    .nav-card:hover .nav-card-footer .arrow { transform: translateX(4px); }
+
+    /* Values */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .value-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .value-icon {
+      font-size: 1.5rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .value-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--navy);
+      margin-bottom: 0.4rem;
+    }
+
+    .value-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Units overview */
+    .units-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .unit-tag {
+      background: var(--teal-pale);
+      color: var(--teal);
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: 1px solid rgba(14,124,123,0.2);
+    }
+
+    /* Announcement bar */
+    .announcement {
+      background: var(--navy-light);
+      padding: 0.7rem 2rem;
+      text-align: center;
+    }
+
+    .announcement-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ───────────────────────────────────────── -->
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">🏛️</div>
+    <div class="nav-brand-text">
+      ICHHS
+      <span class="nav-brand-sub">Training Portal</span>
+    </div>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="annual-training.html">Annual Training</a></li>
+    <li><a href="new-employee.html">New Employee</a></li>
+    <li><a href="resources.html">Resources</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <!-- ── Announcement ─────────────────────────────────── -->
+  <div class="announcement">
+    <div class="announcement-inner">
+      <span>📢</span>
+      <span>Welcome to the ICHHS Training Portal. Complete all required modules for your unit and submit your certification form when finished.</span>
+    </div>
+  </div>
+
+  <!-- ── Hero ─────────────────────────────────────────── -->
+  <section class="home-hero">
+    <div class="home-hero-inner">
+      <div class="home-hero-eyebrow">🏛️ &nbsp;Isanti County Health &amp; Human Services</div>
+      <h1>Employee <em>Training</em><br/>Portal</h1>
+      <p class="home-hero-sub">
+        Your centralized resource for annual compliance training, new employee onboarding, and agency reference documents — all in one place.
+      </p>
+      <div class="home-hero-actions">
+        <a href="new-employee.html" class="btn btn-primary btn-lg">
+          New Employee? Start Here →
+        </a>
+        <a href="annual-training.html" class="btn btn-lg" style="background:rgba(255,255,255,0.12);color:#fff;border:2px solid rgba(255,255,255,0.25);">
+          Annual Training
+        </a>
+      </div>
+      <div class="home-hero-stat-row">
+        <div class="home-hero-stat">
+          <div class="home-hero-stat-num">9</div>
+          <div class="home-hero-stat-label">HHS Units</div>
+        </div>
+        <div class="home-hero-stat">
+          <div class="home-hero-stat-num">11</div>
+          <div class="home-hero-stat-label">Training Modules</div>
+        </div>
+        <div class="home-hero-stat">
+          <div class="home-hero-stat-num">3</div>
+          <div class="home-hero-stat-label">Portal Sections</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Mission Strip ────────────────────────────────── -->
+  <div class="mission-strip">
+    <div class="mission-strip-inner">
+      <span class="mission-strip-label">Our Mission</span>
+      <span class="mission-strip-text">"Empowering residents to make healthy and safe choices to strengthen the well-being of our community."</span>
+    </div>
+  </div>
+
+  <!-- ── Main Navigation Cards ────────────────────────── -->
+  <div class="content-area">
+
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Where would you like to go?</h2>
+        <p class="section-subtitle">Select a section below to begin your training or access resources.</p>
+      </div>
+    </div>
+
+    <div class="nav-cards mb-4">
+
+      <!-- Annual Training -->
+      <a href="annual-training.html" class="nav-card">
+        <div class="nav-card-top teal"></div>
+        <div class="nav-card-body">
+          <div class="nav-card-icon teal">📋</div>
+          <h2 class="nav-card-title">Annual Employee Training</h2>
+          <p class="nav-card-desc">
+            Required yearly training for all ICHHS staff. Includes agency overview, policies, compliance reminders, and unit-specific modules.
+          </p>
+          <div class="nav-card-tags">
+            <span class="badge badge-teal">Required Annually</span>
+            <span class="badge badge-navy">All Units</span>
+          </div>
+        </div>
+        <div class="nav-card-footer">
+          Start Annual Training
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <!-- New Employee -->
+      <a href="new-employee.html" class="nav-card">
+        <div class="nav-card-top navy"></div>
+        <div class="nav-card-body">
+          <div class="nav-card-icon navy">🎓</div>
+          <h2 class="nav-card-title">New Employee Training</h2>
+          <p class="nav-card-desc">
+            Onboarding training for new ICHHS staff. Complete all modules in order — from welcome and professional expectations through safety and agency operations.
+          </p>
+          <div class="nav-card-tags">
+            <span class="badge badge-navy">New Hires</span>
+            <span class="badge badge-teal">9 Units</span>
+          </div>
+        </div>
+        <div class="nav-card-footer">
+          Begin Onboarding
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <!-- Resources -->
+      <a href="resources.html" class="nav-card">
+        <div class="nav-card-top gold"></div>
+        <div class="nav-card-body">
+          <div class="nav-card-icon gold">📂</div>
+          <h2 class="nav-card-title">Resources &amp; Documents</h2>
+          <p class="nav-card-desc">
+            Quick access to policies, templates, technology guides, and internal reference documents. If you're not sure where to find something, start here.
+          </p>
+          <div class="nav-card-tags">
+            <span class="badge badge-gold">Policies</span>
+            <span class="badge badge-gold">Templates</span>
+            <span class="badge badge-gold">Guides</span>
+          </div>
+        </div>
+        <div class="nav-card-footer">
+          Browse Resources
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Agency Values -->
+    <div class="section-header mt-4">
+      <div>
+        <h2 class="section-title">Our Core Values</h2>
+        <p class="section-subtitle">The principles that guide everything we do at Isanti County HHS.</p>
+      </div>
+    </div>
+
+    <div class="values-grid mb-4">
+      <div class="value-card">
+        <div class="value-icon">💬</div>
+        <div class="value-title">Communication</div>
+        <div class="value-desc">We provide timely and open communication.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🌍</div>
+        <div class="value-title">Diversity</div>
+        <div class="value-desc">We embrace a culture of inclusivity.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚖️</div>
+        <div class="value-title">Integrity</div>
+        <div class="value-desc">We are honest and ethical, treating all with dignity and respect.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Service</div>
+        <div class="value-desc">We provide high-quality, person-centered services to individuals and families.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">👥</div>
+        <div class="value-title">Teamwork</div>
+        <div class="value-desc">We call on the unique skills and creativity of our staff through trust, appreciation, and accountability.</div>
+      </div>
+    </div>
+
+    <!-- Units Overview -->
+    <div class="section-header mt-4">
+      <div>
+        <h2 class="section-title">ICHHS Units</h2>
+        <p class="section-subtitle">Training is available for all nine units within Isanti County Health &amp; Human Services.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted text-sm mb-2">Select your unit during training to access unit-specific modules and guidelines.</p>
+        <div class="units-list">
+          <span class="unit-tag">Adult Protection &amp; Waivered Services</span>
+          <span class="unit-tag">Assessment &amp; Community Support Services</span>
+          <span class="unit-tag">Behavioral Health</span>
+          <span class="unit-tag">Children's Services</span>
+          <span class="unit-tag">Child Support</span>
+          <span class="unit-tag">Division Operations</span>
+          <span class="unit-tag">Financial Assistance</span>
+          <span class="unit-tag">Fiscal</span>
+          <span class="unit-tag">Public Health</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content-area -->
+
+  <!-- ── Footer ───────────────────────────────────────── -->
+  <footer class="footer">
+    <strong>Isanti County Health &amp; Human Services</strong> — Training Portal<br/>
+    For technical issues, contact your supervisor or Division Operations.<br/>
+    &copy; <span id="yr"></span> Isanti County HHS. Internal use only.
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<script src="scripts.js"></script>
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

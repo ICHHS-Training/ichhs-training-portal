@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Annual Employee Training | ICHHS Training Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Training layout (sidebar + content) ── */
+    .training-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .module-nav {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: calc(var(--nav-height) + 1rem);
+    }
+
+    .module-nav-header {
+      background: var(--navy);
+      padding: 1rem 1.25rem;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      color: var(--white);
+    }
+
+    .module-nav-list { list-style: none; padding: 0.5rem 0; }
+
+    .module-nav-item button {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      text-align: left;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .module-nav-item button:hover  { background: var(--gray-100); color: var(--text); }
+    .module-nav-item button.active { background: var(--teal-pale); color: var(--teal); font-weight: 600; }
+    .module-nav-item button.done   { color: var(--success); }
+
+    .module-nav-item .check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-300);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .module-nav-item button.active .check { border-color: var(--teal); background: var(--teal); color: var(--white); }
+    .module-nav-item button.done   .check { border-color: var(--success); background: var(--success); color: var(--white); }
+
+    /* ── Module content panels ── */
+    .module-content { display: none; }
+    .module-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+    .module-header {
+      background: var(--navy);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 1.75rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .module-header-icon {
+      width: 56px; height: 56px;
+      background: rgba(255,255,255,0.12);
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; flex-shrink: 0;
+    }
+    .module-num {
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal-light); margin-bottom: 0.3rem;
+    }
+    .module-header h2 { font-family: var(--font-display); font-size: 1.4rem; color: var(--white); line-height: 1.25; margin-bottom: 0.35rem; }
+    .module-header p  { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.6; }
+
+    .module-body {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-top: none;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      padding: 2rem;
+    }
+
+    /* ── Module docs ── */
+    .module-docs {
+      background: var(--gray-100);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .module-docs-title {
+      font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem;
+    }
+    .doc-chip-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .doc-chip {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; font-weight: 600; color: var(--teal);
+      text-decoration: none; background: var(--white);
+      padding: 0.3rem 0.75rem; border-radius: 100px;
+      border: 1px solid var(--teal-pale); box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .doc-chip:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* ── Info box ── */
+    .info-box {
+      background: var(--gray-100); border-radius: var(--radius);
+      padding: 1rem 1.25rem; font-size: 0.875rem;
+      color: var(--text-muted); line-height: 1.65; margin-bottom: 1rem;
+    }
+    .info-box strong { color: var(--text); }
+
+    /* ── Safety grid ── */
+    .safety-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.75rem; margin-top: 0.75rem; margin-bottom: 1rem;
+    }
+    .safety-item {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: var(--radius); padding: 0.85rem 1rem;
+      font-size: 0.875rem; display: flex; gap: 0.6rem; align-items: flex-start;
+    }
+    .safety-item-icon { font-size: 1.15rem; flex-shrink: 0; }
+
+    /* ── HIPAA field ── */
+    .hipaa-field {
+      display: inline-block; border-bottom: 2px solid var(--teal);
+      min-width: 180px; padding: 0 0.25rem; margin-left: 0.5rem;
+      color: var(--text-muted); font-style: italic;
+    }
+
+    /* ── Mark complete bar ── */
+    .module-complete-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding-top: 1.5rem; margin-top: 1.5rem;
+      border-top: 2px solid var(--gray-100); flex-wrap: wrap;
+    }
+    .btn-complete {
+      background: var(--success); color: var(--white); border: none;
+      border-radius: var(--radius); padding: 0.65rem 1.35rem;
+      font-family: var(--font-body); font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; display: inline-flex; align-items: center;
+      gap: 0.5rem; transition: all 0.2s;
+    }
+    .btn-complete:hover    { background: #155D38; transform: translateY(-1px); }
+    .btn-complete:disabled { background: var(--gray-300); cursor: default; transform: none; }
+
+    /* ── Progress bar ── */
+    .progress-tracker {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg); padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem; box-shadow: var(--shadow-sm);
+    }
+    .progress-tracker-title {
+      font-size: 0.82rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem;
+    }
+    .progress-bar-wrap {
+      background: var(--gray-200); border-radius: 100px;
+      height: 10px; overflow: hidden; margin-bottom: 0.5rem;
+    }
+    .progress-bar-fill {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, var(--teal), var(--teal-light));
+      transition: width 0.4s ease; width: 0%;
+    }
+    .progress-label { font-size: 0.82rem; color: var(--text-muted); }
+    .progress-label strong { color: var(--teal); }
+
+    @media (max-width: 900px) {
+      .training-layout { grid-template-columns: 1fr; }
+      .module-nav { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">&#127963;</div>
+    <div class="nav-brand-text">ICHHS<span class="nav-brand-sub">Training Portal</span></div>
+  </a>
+  <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="annual-training.html" class="active">Annual Training</a></li>
+    <li><a href="new-employee.html">New Employee</a></li>
+    <li><a href="resources.html">Resources</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrapper">
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="page-hero-eyebrow">&#128203; Required Annually</div>
+      <h1>Annual Employee Training</h1>
+      <p>Select your unit, then work through each module in order. Review all documents and complete the certification form when finished.</p>
+    </div>
+  </section>
+
+  <div class="content-area">
+
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">&rsaquo;</span>
+      Annual Employee Training
+    </div>
+
+    <div class="alert alert-info mb-3">
+      <span>&#8505;</span>
+      <div><strong>How to use this page:</strong> Select your unit below, then use the module sidebar to navigate through each required training module. Mark each module complete as you go, then submit your certification form at the end.</div>
+    </div>
+
+    <!-- Unit Selector -->
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Step 1: Select Your Unit</h2>
+        <p class="section-subtitle">Choose the unit that matches your position at ICHHS.</p>
+      </div>
+    </div>
+
+    <div class="unit-selector mb-4">
+      <button class="unit-btn active" onclick="selectUnit('ap', this)">
+        <span class="unit-btn-icon">&#128737;</span>
+        <span class="unit-btn-name">Adult Protection &amp; Waivered Services</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('acss', this)">
+        <span class="unit-btn-icon">&#127973;</span>
+        <span class="unit-btn-name">Assessment &amp; Community Support</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('bh', this)">
+        <span class="unit-btn-icon">&#129504;</span>
+        <span class="unit-btn-name">Behavioral Health</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('cs', this)">
+        <span class="unit-btn-icon">&#128118;</span>
+        <span class="unit-btn-name">Children's Services</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('chsup', this)">
+        <span class="unit-btn-icon">&#128196;</span>
+        <span class="unit-btn-name">Child Support</span>
+        <span class="unit-btn-count">4 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('do', this)">
+        <span class="unit-btn-icon">&#127962;</span>
+        <span class="unit-btn-name">Division Operations</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('fa', this)">
+        <span class="unit-btn-icon">&#128176;</span>
+        <span class="unit-btn-name">Financial Assistance</span>
+        <span class="unit-btn-count">5 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('fiscal', this)">
+        <span class="unit-btn-icon">&#128202;</span>
+        <span class="unit-btn-name">Fiscal</span>
+        <span class="unit-btn-count">4 Modules</span>
+      </button>
+      <button class="unit-btn" onclick="selectUnit('ph', this)">
+        <span class="unit-btn-icon">&#129658;</span>
+        <span class="unit-btn-name">Public Health</span>
+        <span class="unit-btn-count">4&ndash;5 Modules</span>
+      </button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-tracker">
+      <div class="progress-tracker-title">Your Progress</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
+      <div class="progress-label"><strong id="progress-text">0 of 5</strong> modules completed</div>
+    </div>
+
+    <!-- Training Layout: Sidebar + Module Content -->
+    <div class="training-layout">
+
+      <!-- Sidebar -->
+      <div class="module-nav">
+        <div class="module-nav-header" id="sidebar-unit-name">Adult Protection &amp; Waivered Services</div>
+        <ul class="module-nav-list" id="module-nav-list"></ul>
+      </div>
+
+      <!-- Module panels -->
+      <div id="module-panels">
+
+        <!-- ── MODULE 1: AGENCY OVERVIEW ── -->
+        <div class="module-content active" id="mod-1">
+          <div class="module-header">
+            <div class="module-header-icon">&#128204;</div>
+            <div>
+              <div class="module-num">Module 1</div>
+              <h2>Agency Overview</h2>
+              <p>Mission, values, EIO, printing guidelines, and agency safety resources.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="info-box">
+              <strong>Our Mission:</strong> Empowering residents to make healthy and safe choices to strengthen the well-being of our community.<br/><br/>
+              <strong>Our Values:</strong> Communication &middot; Diversity &middot; Integrity &middot; Service &middot; Teamwork
+            </div>
+
+            <p style="font-size:0.925rem;font-weight:600;color:var(--navy);margin-bottom:0.75rem;">Important Reminders</p>
+
+            <div class="safety-items" style="grid-template-columns:repeat(auto-fill,minmax(260px,1fr));">
+              <div class="safety-item" style="flex-direction:column;gap:0.5rem;align-items:flex-start;">
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="safety-item-icon">&#128218;</span><strong>Resource Guide</strong></div>
+                <span style="color:var(--text-muted);font-size:0.82rem;">The most current version is always available under Resource Documents. Refer to it first for any internal questions. If you have suggestions for additions, please contact Marjanae.</span>
+              </div>
+              <div class="safety-item" style="flex-direction:column;gap:0.5rem;align-items:flex-start;">
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="safety-item-icon">&#128424;</span><strong>Printers</strong></div>
+                <span style="color:var(--text-muted);font-size:0.82rem;">All equipment is separated by revenue source. You must use your unit&rsquo;s printer or the shared printers in Division Operations (supply room, behind the front desk, or bypass through the window). Always ensure your printer settings are set to <strong>Black &amp; White</strong> &mdash; even on a B&amp;W printer, a color setting results in color charges. Contact Marjanae before printing anything beyond letterhead in color.</span>
+              </div>
+              <div class="safety-item" style="flex-direction:column;gap:0.5rem;align-items:flex-start;">
+                <div style="display:flex;align-items:center;gap:0.5rem;"><span class="safety-item-icon">&#128205;</span><strong>EIO (Employee In/Out)</strong></div>
+                <span style="color:var(--text-muted);font-size:0.82rem;">EIO is essential for supervisor time card management, employee safety, emergency response, and locating staff when needed. Colleagues also rely on it to determine availability for collaboration and communication. EIO is a tool for efficiency, safety, and accessibility &mdash; <strong>not surveillance</strong>. Using it correctly fosters an organized, secure, and responsive work environment for everyone.</span>
+              </div>
+            </div>
+
+            <p style="font-size:0.925rem;font-weight:600;color:var(--navy);margin-bottom:0.75rem;">Agency Safety &amp; Healthy Environment</p>
+            <div class="safety-items">
+              <div class="safety-item"><span class="safety-item-icon">&#128138;</span><div><strong>First Aid Kit</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">Hallway by the upstairs breakroom</span></div></div>
+              <div class="safety-item"><span class="safety-item-icon">&#128155;</span><div><strong>AED</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">Located in the lobby</span></div></div>
+              <div class="safety-item"><span class="safety-item-icon">&#129656;</span><div><strong>Stop the Bleed Kits</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">Upstairs hallway by breakroom &amp; Garden Level by Kendra&rsquo;s Office</span></div></div>
+              <div class="safety-item"><span class="safety-item-icon">&#127807;</span><div><strong>Scent-Free Workplace</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">Please be considerate of coworkers</span></div></div>
+              <div class="safety-item"><span class="safety-item-icon">&#9888;</span><div><strong>No Latex Allowed</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">No latex balloons or materials in the work area</span></div></div>
+              <div class="safety-item"><span class="safety-item-icon">&#129381;</span><div><strong>No Cashews in Office</strong><br/><span style="color:var(--text-muted);font-size:0.82rem;">Severe allergy risk &mdash; please avoid</span></div></div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review all content above before marking complete.</span>
+              <button class="btn-complete" onclick="markComplete(1, this)">&#10003; Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MODULE 2: POLICIES & COMPLIANCE ── -->
+        <div class="module-content" id="mod-2">
+          <div class="module-header">
+            <div class="module-header-icon">&#128203;</div>
+            <div>
+              <div class="module-num">Module 2</div>
+              <h2>Agency Policies &amp; Compliance</h2>
+              <p>HIPAA, Federal Tax Information, and required agency policy documents.</p>
+            </div>
+          </div>
+          <div class="module-body">
+
+            <p style="font-size:0.925rem;font-weight:600;color:var(--navy);margin-bottom:0.4rem;">HIPAA</p>
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.4rem;">When you are due for your annual HIPAA training, a reminder will come directly to your email.</p>
+            <p style="font-size:0.875rem;margin-bottom:1.25rem;">My annual HIPAA training expiration date is: <span class="hipaa-field">&nbsp;</span></p>
+
+            <p style="font-size:0.925rem;font-weight:600;color:var(--navy);margin-bottom:0.4rem;">Federal Tax Information (FTI)</p>
+            <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Procedures must be followed per DHS Bulletin #13-69-09. After reviewing the Safeguarding FTI Policy, go to the front desk, ask for the FTI binder, review the internal procedure, and sign next to your name. Signing acknowledges that you have read and understand the FTI policy and procedure.</p>
+
+            <div class="module-docs">
+              <div class="module-docs-title">&#128196; Required Policy Documents</div>
+              <div class="alert alert-info" style="margin-bottom:0.85rem;margin-top:0;padding:0.75rem 1rem;font-size:0.85rem;"><span>&#8505;</span><div><strong>Action Required:</strong> You must read each of the following policy documents before marking this module complete.</div></div>
+              <div class="doc-chip-row">
+                <a href="https://drive.google.com/file/d/1uNzxxxRiDAcliBVshBctMBh3x3AYObl9/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">FTI Safeguarding Policy</a>
+                <a href="https://drive.google.com/file/d/1JOjcjXTUfi9vlJONFQarLJoo1OWn0PHf/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Affirmative Action Plan</a>
+                <a href="https://drive.google.com/file/d/1JucHRtTm3FoI8ykH5DZpZe1co1UJbaEN/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">LEP Plan</a>
+                <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Violence Prevention Plan</a>
+                <a href="https://drive.google.com/file/d/1-85hHDL4kg6-GVlGgdLABwFsMqDGpdlj/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Dress Guidelines</a>
+              </div>
+            </div>
+
+            <div class="module-complete-bar">
+              <span class="text-muted text-sm">Review all policy documents and note your HIPAA expiration date before proceeding.</span>
+              <button class="btn-complete" onclick="markComplete(2, this)">&#10003; Mark Module Complete</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MODULE 3: UNIT-SPECIFIC (rendered by JS) ── -->
+        <div class="module-content" id="mod-3">
+          <div class="module-header">
+            <div class="module-header-icon" id="mod3-icon">&#128737;</div>
+            <div>
+              <div class="module-num">Module 3</div>
+              <h2 id="mod3-title">Unit-Specific Training</h2>
+              <p id="mod3-desc">Training specific to your unit&rsquo;s role and requirements.</p>
+            </div>
+          </div>
+          <div class="module-body" id="mod3-body">
+            <!-- Populated by JS based on selected unit -->
+          </div>
+        </div>
+
+        <!-- ── MODULE 4: UNIT GUIDELINES (rendered by JS) ── -->
+        <div class="module-content" id="mod-4">
+          <div class="module-header">
+            <div class="module-header-icon">&#128216;</div>
+            <div>
+              <div class="module-num">Module 4</div>
+              <h2>Unit Guidelines</h2>
+              <p id="mod4-desc">Review your unit&rsquo;s specific guidelines and procedures.</p>
+            </div>
+          </div>
+          <div class="module-body" id="mod4-body">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- ── MODULE 5 / FINAL: CERTIFICATION ── -->
+        <div class="module-content" id="mod-final">
+          <div class="module-header">
+            <div class="module-header-icon">&#10003;</div>
+            <div>
+              <div class="module-num">Final Module</div>
+              <h2>Emergency Contact &amp; Certification</h2>
+              <p>Complete the certification form to officially submit your annual training.</p>
+            </div>
+          </div>
+          <div class="module-body">
+            <div class="alert alert-success mt-2">
+              <span>&#127881;</span>
+              <div><strong>You have completed all required training modules!</strong> Click the button below to open the certification form. Complete and submit it to finish your annual training.</div>
+            </div>
+            <div class="info-box mt-3">
+              <strong>The certification form includes:</strong><br/>
+              Training completion acknowledgment &middot; Emergency Contact Information &middot; Electronic Signature
+            </div>
+            <a href="https://docs.google.com/forms/d/13Q7MOyYTrcl2ce1HqcuSEpDM2EBvB_c07Qc-oPNMkY0/preview" target="_blank" rel="noopener" class="btn btn-primary btn-lg mt-3" style="font-size:1rem;padding:0.9rem 2rem;">
+              &#128221; Complete Certification Form &#8594;
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /module-panels -->
+    </div><!-- /training-layout -->
+  </div><!-- /content-area -->
+
+  <footer class="footer">
+    <strong>Isanti County Health &amp; Human Services</strong> &mdash; Training Portal<br/>
+    For technical issues, contact your supervisor or Division Operations.<br/>
+    &copy; <span id="yr"></span> Isanti County HHS. Internal use only.
+  </footer>
+</div>
+
+<script src="scripts.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── Unit configuration ───────────────────────────────────────
+var unitConfig = {
+  ap:     { name: 'Adult Protection &amp; Waivered Services',       icon: '&#128737;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1lNeHpvVyAFe2jO3OQRxfiqLMfBOEIPTM/view?usp=sharing', guideName: 'AP &amp; Waivered Services Unit Guidelines' },
+  acss:   { name: 'Assessment &amp; Community Support Services',    icon: '&#127973;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing', guideName: 'ACSS Unit Guidelines' },
+  bh:     { name: 'Behavioral Health',                               icon: '&#129504;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing', guideName: 'Behavioral Health Unit Guidelines' },
+  cs:     { name: "Children's Services",                             icon: '&#128118;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing', guideName: "Children's Services Unit Guidelines" },
+  chsup:  { name: 'Child Support',                                   icon: '&#128196;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing', guideName: 'Child Support Unit Guidelines' },
+  do:     { name: 'Division Operations',                             icon: '&#127962;', totalMods: 5, ssts: false, civil: true,  imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing', guideName: 'Division Operations Unit Guidelines' },
+  fa:     { name: 'Financial Assistance',                            icon: '&#128176;', totalMods: 5, ssts: false, civil: true,  imrms: true,  lcts: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing', guideName: 'Financial Assistance Unit Guidelines' },
+  fiscal: { name: 'Fiscal',                                          icon: '&#128202;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing', guideName: 'Fiscal Unit Guidelines' },
+  ph:     { name: 'Public Health',                                   icon: '&#129658;', totalMods: 5, ssts: false, civil: false, imrms: false, lcts: true,  guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing', guideName: 'Public Health Unit Guidelines' }
+};
+
+// Units with no unit-specific module (mod-3 becomes guidelines, mod-4 becomes cert)
+var noSpecificModule = ['chsup', 'fiscal'];
+
+var currentUnit    = 'ap';
+var completedMods  = new Set();
+var currentModId   = 1;
+
+// ── Module order per unit type ──────────────────────────────
+function getModuleOrder(unitId) {
+  if (noSpecificModule.indexOf(unitId) !== -1) {
+    return [1, 2, 3, 'final'];          // no unit-specific, mod-3 = guidelines
+  }
+  return [1, 2, 3, 4, 'final'];         // mod-3 = unit-specific, mod-4 = guidelines
+}
+
+function getModuleLabel(modId, unitId) {
+  var labels = {
+    1: 'Agency Overview',
+    2: 'Policies &amp; Compliance',
+    3: noSpecificModule.indexOf(unitId) !== -1 ? 'Unit Guidelines' : 'Unit-Specific Training',
+    4: 'Unit Guidelines',
+    'final': 'Certification'
+  };
+  return labels[modId] || 'Module ' + modId;
+}
+
+// ── Render sidebar ──────────────────────────────────────────
+function renderSidebar(unitId) {
+  var u    = unitConfig[unitId];
+  var list = document.getElementById('module-nav-list');
+  document.getElementById('sidebar-unit-name').innerHTML = u.name;
+  list.innerHTML = '';
+
+  var order = getModuleOrder(unitId);
+  order.forEach(function(modId) {
+    var isDone   = completedMods.has(modId);
+    var isActive = currentModId === modId;
+    var li  = document.createElement('li');
+    li.className = 'module-nav-item';
+    var btn = document.createElement('button');
+    if (isActive) btn.classList.add('active');
+    if (isDone)   btn.classList.add('done');
+    var label = getModuleLabel(modId, unitId);
+    var num   = modId === 'final' ? '&#127891;' : modId;
+    btn.innerHTML = '<span class="check">' + (isDone ? '&#10003;' : '') + '</span> ' + (modId === 'final' ? '' : 'Module ' + num + ': ') + label;
+    btn.onclick = (function(id) { return function() { switchModule(id); }; })(modId);
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+}
+
+// ── Render unit-specific module (mod-3 for most units) ─────
+function renderUnitSpecific(unitId) {
+  var u    = unitConfig[unitId];
+  var body = document.getElementById('mod3-body');
+  document.getElementById('mod3-icon').innerHTML  = u.icon;
+  document.getElementById('mod3-title').textContent = 'Unit-Specific Training';
+  document.getElementById('mod3-desc').textContent  = 'Training specific to your unit\'s role and requirements.';
+
+  var html = '';
+
+  if (u.ssts) {
+    html += '<div class="module-docs"><div class="module-docs-title">&#128290; SSTS Training &mdash; Random Moments</div>'
+      + '<div class="info-box" style="margin-bottom:0.85rem;"><strong>Why are Random Moments so important?</strong><br/>SSTS is a federally approved cost allocation method that determines reimbursement for administrative social service work, based on quarterly random samplings of staff activities. Completing your Random Moments accurately and on time is critical to agency funding.</div>'
+      + '<div class="doc-chip-row">'
+      + '<a href="https://drive.google.com/file/d/17mEZx0i_Y_0JKb9qT-6PEV1awt3Urm5T/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">SSTS Participant Handbook</a>'
+      + '<a href="https://drive.google.com/file/d/1ct6-0ZSAuTtXZRqRx3k_kAdghMkBflaW/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">SSTS Categories, Codes &amp; Definitions</a>'
+      + '</div></div>';
+  }
+
+  if (u.civil) {
+    html += '<div class="module-docs"><div class="module-docs-title">&#127963; Civil Rights Training</div>'
+      + '<div class="doc-chip-row">'
+      + '<a href="https://drive.google.com/file/d/1MEGoH96cfFZUqCnuNRxxfi39c5LK69FW/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Civil Rights Training</a>'
+      + '</div></div>';
+  }
+
+  if (u.imrms) {
+    html += '<div class="module-docs"><div class="module-docs-title">&#128290; IMRMS Training &mdash; Random Moments</div>'
+      + '<div class="info-box" style="margin-bottom:0.85rem;"><strong>Why are Random Moments so important?</strong><br/>IMRMS is a federally approved cost allocation method that determines reimbursement for Financial Assistance administrative work, based on quarterly random samplings of staff activities.</div>'
+      + '<div class="doc-chip-row">'
+      + '<a href="https://drive.google.com/file/d/1wJK6xmLDBvP5j7Ned3t983aSO7mfBVNc/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">IMRMS Participant Handbook</a>'
+      + '<a href="https://drive.google.com/file/d/1cOeQBISpR5J8p4arlQTMFh07ahUUs696/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">IMRMS Categories, Codes &amp; Definitions</a>'
+      + '</div></div>';
+  }
+
+  if (u.lcts) {
+    html += '<div class="alert alert-warn" style="margin-bottom:1rem;"><span>&#9888;</span><div><strong>WIC Employees and Public Health Nurses only.</strong> If neither applies to you, proceed directly to Unit Guidelines.</div></div>'
+      + '<div class="module-docs"><div class="module-docs-title">&#127973; LCTS Module</div>'
+      + '<div class="doc-chip-row">'
+      + '<a href="https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">What is LCTS?</a>'
+      + '</div></div>';
+  }
+
+  html += '<div class="module-complete-bar">'
+    + '<span class="text-muted text-sm">Review all unit-specific materials before proceeding.</span>'
+    + '<button class="btn-complete" onclick="markComplete(3, this)">&#10003; Mark Module Complete</button>'
+    + '</div>';
+
+  body.innerHTML = html;
+}
+
+// ── Render unit guidelines module (mod-4, or mod-3 for short units) ─
+function renderGuidelines(unitId, panelId, modId) {
+  var u    = unitConfig[unitId];
+  var body = document.getElementById(panelId);
+
+  var html = '<div class="module-docs"><div class="module-docs-title">&#128216; Unit Guidelines Document</div>'
+    + '<p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.85rem;">Review your unit-specific guidelines carefully. This document outlines procedures, workflows, and expectations specific to your unit.</p>'
+    + '<div class="doc-chip-row">'
+    + '<a href="' + u.guideUrl + '" target="_blank" rel="noopener" class="doc-chip">' + u.guideName + '</a>'
+    + '</div></div>'
+    + '<div class="module-complete-bar">'
+    + '<span class="text-muted text-sm">Review the unit guidelines before proceeding to certification.</span>'
+    + '<button class="btn-complete" onclick="markComplete(' + modId + ', this)">&#10003; Mark Module Complete</button>'
+    + '</div>';
+
+  body.innerHTML = html;
+
+  // Update header desc for short units where mod-3 IS guidelines
+  if (panelId === 'mod3-body') {
+    document.getElementById('mod3-icon').innerHTML = '&#128216;';
+    document.getElementById('mod3-title').textContent = 'Unit Guidelines';
+    document.getElementById('mod3-desc').innerHTML = 'Review your unit-specific guidelines and procedures for ' + u.name.replace(/&amp;/g, '&') + '.';
+  }
+}
+
+// ── Switch visible module ───────────────────────────────────
+function switchModule(modId) {
+  currentModId = modId;
+  document.querySelectorAll('.module-content').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  var panel = document.getElementById('mod-' + modId);
+  if (panel) {
+    panel.classList.add('active');
+    setTimeout(function() { panel.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+  }
+  renderSidebar(currentUnit);
+}
+
+// ── Mark module complete & auto-advance ────────────────────
+function markComplete(modId, btn) {
+  completedMods.add(modId);
+  btn.textContent = '&#10003; Completed';
+  btn.disabled = true;
+  updateProgress();
+  renderSidebar(currentUnit);
+
+  // Auto-advance
+  var order = getModuleOrder(currentUnit);
+  var idx   = order.indexOf(modId);
+  if (idx !== -1 && idx < order.length - 1) {
+    setTimeout(function() { switchModule(order[idx + 1]); }, 500);
+  }
+}
+
+// ── Update progress bar ─────────────────────────────────────
+function updateProgress() {
+  var u     = unitConfig[currentUnit];
+  var total = u.totalMods;
+  var done  = completedMods.size;
+  var pct   = Math.min(100, Math.round((done / total) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').innerHTML = '<strong>' + done + ' of ' + total + '</strong>';
+}
+
+// ── Select unit ─────────────────────────────────────────────
+function selectUnit(unitId, btn) {
+  currentUnit   = unitId;
+  completedMods = new Set();
+  currentModId  = 1;
+
+  document.querySelectorAll('.unit-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+
+  var u = unitConfig[unitId];
+
+  // Re-enable all mark-complete buttons when switching units
+  document.querySelectorAll('.btn-complete').forEach(function(b) {
+    b.disabled = false;
+    b.innerHTML = '&#10003; Mark Module Complete';
+  });
+
+  // Render dynamic modules
+  if (noSpecificModule.indexOf(unitId) !== -1) {
+    // Short units: mod-3 = guidelines, no mod-4
+    renderGuidelines(unitId, 'mod3-body', 3);
+    document.getElementById('mod4-desc').textContent = '';
+    document.getElementById('mod4-body').innerHTML = '';
+  } else {
+    // Full units: mod-3 = unit-specific, mod-4 = guidelines
+    renderUnitSpecific(unitId);
+    renderGuidelines(unitId, 'mod4-body', 4);
+    document.getElementById('mod4-desc').textContent = 'Review your unit\'s specific guidelines and procedures.';
+  }
+
+  updateProgress();
+  renderSidebar(unitId);
+  switchModule(1);
+}
+
+// ── Initialize with default unit ───────────────────────────
+selectUnit('ap', document.querySelector('.unit-btn.active'));
+</script>
+</body>
+</html>
