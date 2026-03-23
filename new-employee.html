@@ -317,7 +317,7 @@
       <button class="unit-btn" onclick="selectUnit('acss', this)"><span class="unit-btn-icon">🏥</span><span class="unit-btn-name">Assessment &amp; Community Support</span><span class="unit-btn-count">11 Modules</span></button>
       <button class="unit-btn" onclick="selectUnit('bh', this)"><span class="unit-btn-icon">🧠</span><span class="unit-btn-name">Behavioral Health</span><span class="unit-btn-count">11 Modules</span></button>
       <button class="unit-btn" onclick="selectUnit('cs', this)"><span class="unit-btn-icon">👶</span><span class="unit-btn-name">Children's Services</span><span class="unit-btn-count">11 Modules</span></button>
-      <button class="unit-btn" onclick="selectUnit('chsup', this)"><span class="unit-btn-icon">📑</span><span class="unit-btn-name">Child Support</span><span class="unit-btn-count">10 Modules</span></button>
+      <button class="unit-btn" onclick="selectUnit('chsup', this)"><span class="unit-btn-icon">📑</span><span class="unit-btn-name">Child Support</span><span class="unit-btn-count">11 Modules</span></button>
       <button class="unit-btn" onclick="selectUnit('do', this)"><span class="unit-btn-icon">🏢</span><span class="unit-btn-name">Division Operations</span><span class="unit-btn-count">11 Modules</span></button>
       <button class="unit-btn" onclick="selectUnit('fa', this)"><span class="unit-btn-icon">💰</span><span class="unit-btn-name">Financial Assistance</span><span class="unit-btn-count">12 Modules</span></button>
       <button class="unit-btn" onclick="selectUnit('fiscal', this)"><span class="unit-btn-icon">📊</span><span class="unit-btn-name">Fiscal</span><span class="unit-btn-count">10 Modules</span></button>
@@ -1514,15 +1514,15 @@ let currentUnit = 'ap';
 
 // ── Unit configurations ─────────────────────────────────────
 const unitConfig = {
-  ap:    { name: 'Adult Protection & Waivered Services', icon: '🛡️', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1PkFoiqzkE7pH8vGI7E0zpxpEHs8wHRXf/view?usp=sharing' },
-  acss:  { name: 'Assessment & Community Support Services', icon: '🏥', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing' },
-  bh:    { name: 'Behavioral Health', icon: '🧠', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing' },
-  cs:    { name: "Children's Services", icon: '👶', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing' },
-  chsup: { name: 'Child Support', icon: '📑', modules: 10, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing' },
-  do:    { name: 'Division Operations', icon: '🏢', modules: 11, ssts: false, civil: true, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing' },
-  fa:    { name: 'Financial Assistance', icon: '💰', modules: 12, ssts: false, civil: true, imrms: true, lcts: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing' },
-  fiscal:{ name: 'Fiscal', icon: '📊', modules: 10, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing' },
-  ph:    { name: 'Public Health', icon: '🩺', modules: 10, ssts: false, civil: false, imrms: false, lcts: true, guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing' }
+  ap:    { name: 'Adult Protection & Waivered Services', icon: '🛡️', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1PkFoiqzkE7pH8vGI7E0zpxpEHs8wHRXf/view?usp=sharing' },
+  acss:  { name: 'Assessment & Community Support Services', icon: '🏥', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing' },
+  bh:    { name: 'Behavioral Health', icon: '🧠', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing' },
+  cs:    { name: "Children's Services", icon: '👶', modules: 11, ssts: true, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing' },
+  chsup: { name: 'Child Support', icon: '📑', modules: 11, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: true, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing' },
+  do:    { name: 'Division Operations', icon: '🏢', modules: 11, ssts: false, civil: true, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing' },
+  fa:    { name: 'Financial Assistance', icon: '💰', modules: 12, ssts: false, civil: true, imrms: true, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing' },
+  fiscal:{ name: 'Fiscal', icon: '📊', modules: 10, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing' },
+  ph:    { name: 'Public Health', icon: '🩺', modules: 10, ssts: false, civil: false, imrms: false, lcts: true, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing' }
 };
 
 const coreModules = [
@@ -1627,6 +1627,22 @@ function renderUnitSpecific(unitId) {
         </div>
       </div>`;
   }
+  if (u.safeguarding) {
+  html += `
+    <div class="module-docs" style="margin-bottom:1.5rem;">
+      <div class="module-docs-title">🔒 Safeguarding Protected Child Support Information</div>
+      <div style="font-size:0.9rem;color:var(--text-muted);line-height:1.65;margin-bottom:0.85rem;">
+        Complete this required training through TrainLink.
+      </div>
+      <ol style="font-size:0.9rem;color:var(--text);line-height:2;padding-left:1.25rem;margin-bottom:0.5rem;">
+        <li>Go to TrainLink by clicking: <a href="https://trainlink.dhs.mn.gov" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">Learning Center</a></li>
+        <li>Click <strong>Sign On</strong>, enter your <strong>X#</strong> and hit OK</li>
+        <li>Select <strong>Course Catalog</strong></li>
+        <li>Search for: <strong>Safeguarding Protected Child Support Information</strong></li>
+        <li>Select <strong>Start Course</strong> then <strong>Launch Course</strong></li>
+      </ol>
+    </div>`;
+}
 
   // Unit Guidelines
   html += `
