@@ -469,19 +469,19 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 
 // ── Unit configuration ───────────────────────────────────────
 var unitConfig = {
-  ap:     { name: 'Adult Protection &amp; Waivered Services',       icon: '&#128737;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1PkFoiqzkE7pH8vGI7E0zpxpEHs8wHRXf/view?usp=sharing', guideName: 'AP &amp; Waivered Services Unit Guidelines' },
-  acss:   { name: 'Assessment &amp; Community Support Services',    icon: '&#127973;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing', guideName: 'ACSS Unit Guidelines' },
-  bh:     { name: 'Behavioral Health',                               icon: '&#129504;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing', guideName: 'Behavioral Health Unit Guidelines' },
-  cs:     { name: "Children's Services",                             icon: '&#128118;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing', guideName: "Children's Services Unit Guidelines" },
-  chsup:  { name: 'Child Support',                                   icon: '&#128196;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing', guideName: 'Child Support Unit Guidelines' },
-  do:     { name: 'Division Operations',                             icon: '&#127962;', totalMods: 5, ssts: false, civil: true,  imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing', guideName: 'Division Operations Unit Guidelines' },
-  fa:     { name: 'Financial Assistance',                            icon: '&#128176;', totalMods: 5, ssts: false, civil: true,  imrms: true,  lcts: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing', guideName: 'Financial Assistance Unit Guidelines' },
-  fiscal: { name: 'Fiscal',                                          icon: '&#128202;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing', guideName: 'Fiscal Unit Guidelines' },
-  ph:     { name: 'Public Health',                                   icon: '&#129658;', totalMods: 5, ssts: false, civil: false, imrms: false, lcts: true,  guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing', guideName: 'Public Health Unit Guidelines' }
+  ap:     { name: 'Adult Protection &amp; Waivered Services',       icon: '&#128737;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1PkFoiqzkE7pH8vGI7E0zpxpEHs8wHRXf/view?usp=sharing', guideName: 'AP &amp; Waivered Services Unit Guidelines' },
+  acss:   { name: 'Assessment &amp; Community Support Services',    icon: '&#127973;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing', guideName: 'ACSS Unit Guidelines' },
+  bh:     { name: 'Behavioral Health',                               icon: '&#129504;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing', guideName: 'Behavioral Health Unit Guidelines' },
+  cs:     { name: "Children's Services",                             icon: '&#128118;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing', guideName: "Children's Services Unit Guidelines" },
+  chsup:  { name: 'Child Support',                                   icon: '&#128196;', totalMods: 5, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: true, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing', guideName: 'Child Support Unit Guidelines' },
+  do:     { name: 'Division Operations',                             icon: '&#127962;', totalMods: 5, ssts: false, civil: true,  imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing', guideName: 'Division Operations Unit Guidelines' },
+  fa:     { name: 'Financial Assistance',                            icon: '&#128176;', totalMods: 5, ssts: false, civil: true,  imrms: true,  lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing', guideName: 'Financial Assistance Unit Guidelines' },
+  fiscal: { name: 'Fiscal',                                          icon: '&#128202;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing', guideName: 'Fiscal Unit Guidelines' },
+  ph:     { name: 'Public Health',                                   icon: '&#129658;', totalMods: 5, ssts: false, civil: false, imrms: false, lcts: true,  safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing', guideName: 'Public Health Unit Guidelines' }
 };
 
 // Units with no unit-specific module (mod-3 becomes guidelines, mod-4 becomes cert)
-var noSpecificModule = ['chsup', 'fiscal'];
+var noSpecificModule = ['fiscal'];
 
 var currentUnit    = 'ap';
 var completedMods  = new Set();
@@ -573,6 +573,18 @@ function renderUnitSpecific(unitId) {
       + '<a href="https://drive.google.com/file/d/1gXolPkEorsGOkdIKvgzzerbr-DNASwWQ/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">What is LCTS?</a>'
       + '</div></div>';
   }
+  
+  if (u.safeguarding) {
+  html += '<div class="module-docs"><div class="module-docs-title">&#128274; Safeguarding Protected Child Support Information</div>'
+    + '<div class="info-box" style="margin-bottom:0.85rem;">Complete this required training through TrainLink.</div>'
+    + '<ol style="font-size:0.9rem;color:var(--text);line-height:2;padding-left:1.25rem;margin-bottom:1rem;">'
+    + '<li>Go to TrainLink by clicking: <a href="https://trainlink.dhs.mn.gov" target="_blank" rel="noopener" style="color:var(--teal);font-weight:600;">Learning Center</a></li>'
+    + '<li>Click <strong>Sign On</strong>, enter your <strong>X#</strong> and hit OK</li>'
+    + '<li>Select <strong>Course Catalog</strong></li>'
+    + '<li>Search for: <strong>Safeguarding Protected Child Support Information</strong></li>'
+    + '<li>Select <strong>Start Course</strong> then <strong>Launch Course</strong></li>'
+    + '</ol></div>';
+}
 
   html += '<div class="module-complete-bar">'
     + '<span class="text-muted text-sm">Review all unit-specific materials before proceeding.</span>'
