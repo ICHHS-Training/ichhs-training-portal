@@ -248,11 +248,17 @@
         <span class="unit-btn-name">Adult Protection &amp; Waivered Services</span>
         <span class="unit-btn-count">5 Modules</span>
       </button>
-      <button class="unit-btn" onclick="selectUnit('acss', this)">
-        <span class="unit-btn-icon">&#127973;</span>
-        <span class="unit-btn-name">Assessment &amp; Community Support</span>
-        <span class="unit-btn-count">5 Modules</span>
-      </button>
+    <button class="unit-btn" onclick="selectUnit('adau', this)">
+  <span class="unit-btn-icon">&#127973;</span>
+  <span class="unit-btn-name">Aging &amp; Disabilities Assessment Unit</span>
+  <span class="unit-btn-count">5 Modules</span>
+</button>
+
+<button class="unit-btn" onclick="selectUnit('css', this)">
+  <span class="unit-btn-icon">&#129309;</span>
+  <span class="unit-btn-name">Community Support Services</span>
+  <span class="unit-btn-count">5 Modules</span>
+</button>
       <button class="unit-btn" onclick="selectUnit('bh', this)">
         <span class="unit-btn-icon">&#129504;</span>
         <span class="unit-btn-name">Behavioral Health</span>
@@ -387,6 +393,8 @@
                 <a href="https://drive.google.com/file/d/1JucHRtTm3FoI8ykH5DZpZe1co1UJbaEN/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">LEP Plan</a>
                 <a href="https://drive.google.com/file/d/1ipw2hAkOmOFDK6iYrSsh4zHmZi60qjeS/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Violence Prevention Plan</a>
                 <a href="https://drive.google.com/file/d/1-85hHDL4kg6-GVlGgdLABwFsMqDGpdlj/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">Dress Guidelines</a>
+                 <a href="https://drive.google.com/file/d/1pvpA7vtsBUGjtQcMikofQwh8NTn9DNf7/view?usp=sharing" target="_blank" rel="noopener" class="doc-chip">The Use of AI in Isanti County</a>
+                <a href="https://docs.google.com/document/d/11oOFXfrZic3bn6AE_Pn93EeZkiChmIPQ/edit?usp=sharing&ouid=116156173353447051864&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-chip">ICHHS COOP</a>
               </div>
             </div>
 
@@ -470,10 +478,33 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 // ── Unit configuration ───────────────────────────────────────
 var unitConfig = {
   ap:     { name: 'Adult Protection &amp; Waivered Services',       icon: '&#128737;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1PkFoiqzkE7pH8vGI7E0zpxpEHs8wHRXf/view?usp=sharing', guideName: 'AP &amp; Waivered Services Unit Guidelines' },
-  acss:   { name: 'Assessment &amp; Community Support Services',    icon: '&#127973;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing', guideName: 'ACSS Unit Guidelines' },
+adau: {
+  name: 'Aging &amp; Disabilities Assessment Unit',
+  icon: '&#127973;',
+  totalMods: 5,
+  ssts: true,
+  civil: false,
+  imrms: false,
+  lcts: false,
+  safeguarding: false,
+  guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing',
+  guideName: 'Aging & Disabilities Assessment Unit Guidelines'
+},
   bh:     { name: 'Behavioral Health',                               icon: '&#129504;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1Rcm9dvq-Nya1Kf1gFinmw3FhjTL2LwwT/view?usp=sharing', guideName: 'Behavioral Health Unit Guidelines' },
   cs:     { name: "Children's Services",                             icon: '&#128118;', totalMods: 5, ssts: true,  civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1X49FQhoPAUwue2GdS1ZdvWtSImHIf0aD/view?usp=sharing', guideName: "Children's Services Unit Guidelines" },
   chsup:  { name: 'Child Support',                                   icon: '&#128196;', totalMods: 5, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: true, guideUrl: 'https://drive.google.com/file/d/1Y2mqZEfSYAfgeUoIWEJngzQw0MoM6JSY/view?usp=sharing', guideName: 'Child Support Unit Guidelines' },
+css: {
+  name: 'Community Support Services',
+  icon: '&#129309;',
+  totalMods: 5,
+  ssts: true,
+  civil: false,
+  imrms: false,
+  lcts: false,
+  safeguarding: false,
+  guideUrl: 'https://drive.google.com/file/d/1VNx6zNJU0EPyIHAAYJz-CImyfmzCf-AM/view?usp=sharing',
+  guideName: 'Community Support Services Unit Guidelines'
+},
   do:     { name: 'Division Operations',                             icon: '&#127962;', totalMods: 5, ssts: false, civil: true,  imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1ExMTKKs001C37FekA2B2AuaJ9qmmQMnm/view?usp=sharing', guideName: 'Division Operations Unit Guidelines' },
   fa:     { name: 'Financial Assistance',                            icon: '&#128176;', totalMods: 5, ssts: false, civil: true,  imrms: true,  lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1arT7jXqLib-Z1YQpMv5k7aPxc7TO9Op8/view?usp=sharing', guideName: 'Financial Assistance Unit Guidelines' },
   fiscal: { name: 'Fiscal',                                          icon: '&#128202;', totalMods: 4, ssts: false, civil: false, imrms: false, lcts: false, safeguarding: false, guideUrl: 'https://drive.google.com/file/d/1hSmfGtbDk5vskTE0oO57wDaCYKkPnDkm/view?usp=sharing', guideName: 'Fiscal Unit Guidelines' },
